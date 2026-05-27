@@ -1,0 +1,42 @@
+\section{Analyse}
+\subsection{Ist-Analyse}
+\subsubsection{Funktionsbaustein}
+Aktuell verwendet die Abteilung bei der Realisierung von Kundenprojekten im Bereich der Wasser- und Abwasserwirtschaft die sogenannte „Waterfunctions“ Bibliothek für die PLCnext Engineer Entwicklungsumgebung. Die Bibliothek wurde von der VMM Infrastructure entwickelt und umfasst unter anderem verschiedene Funktionsbausteine zum Steuern von Aggregaten aus industriellen Anlagen wie Motoren, Gebläsen und Pumpen. Sie bilden den Grundstein, der in dieser Praxisarbeit entstandenen Funktionsbausteine und sollten daher näher betrachtet werden.
+Für den Späteren Vergleich zwischen dem Stand der Funktionsbausteine, ist es hilfreich den aktuellen Stand mithilfe einer Ist-Analyse vor Augen zu führen. Hierzu wird exemplarisch der Motor Funktionsbaustein verwendet, da sich die Bausteine in den Grundzügen nicht großartig voneinander unterscheiden.
+
+Der Standard-Funktionsbaustein für die Steuerung eines Motors ist aktuell darauf ausgelegt, den Betrieb eines bestimmten Motors zu regeln, zu überwachen und zu steuern. Dabei wurden für den Betrieb des Motors verschiedene Betriebsmodi entworfen, um den Motor auf unterschiedliche Weisen zu Steuern. Der Baustein verfügt über die folgenden 4 Betriebsmodi:
+
+-	Automatik Modus: In diesem Modus lässt sich der Antrieb über die automatischen Start- und Stoppeingänge steuern. Dies ermöglicht die automatische Steuerung beispielsweise durch angeschlossene Sensoren. 
+
+-	Hand Modus: In der Betriebsart Hand startet der Antrieb sofort.
+
+-	Aus Modus: Wird in die Betriebsart AUS gewechselt, stoppt das Aggregat sofort.
+
+-	Visu Modus: In diesem Modus kann der Motor über das eHMI im web based Management der PLCnext gesteuert werden
+
+Der Betriebsmodus kann über die passenden Eingangsvariablen des Funktionsbausteins ausgewählt werden. Sollte keine Betriebsart ausgewählt sein, lässt sich der Antrieb auch über manuelle Eingangsvariablen Steuern. Fehler und Störmeldungen werden ebenfalls durch verschiedene Eingangsvariablen überwacht. Kommt es beispielsweise in der Schaltung zu einem Kurzschluss, kann ein Motorschutzschalter eine Fehlermeldung an die passende Eingangsvariable des Funktionsbausteines zurückgeben, wodurch der Antrieb gestoppt wird. Der Zustand des Funktionsbausteins wird aktuell über eine Struktur dargestellt, die man der Abbildung… entnehmen kann. An den Ausgängen werden zusätzlich die passenden Alarme zu den Fehlermeldungen ausgegeben.
+Der Antrieb des Motors selbst wird über die Passende Ausgangsvariable des FU´s gesteuert. Dabei werden innerhalb des FU´s Fehler und Störmeldungen validiert, wodurch der Betrieb nur unter Einhaltung bestimmter Voraussetzungen starten kann (z.B. startet der Antrieb nur, wenn der Motorschutzschalter nicht ausgelöst wurde). 
+
+\subsubsection{Anbindung an FlowChief}
+Um einen Funktionsbaustein aktuell an ein SCADA-System wie FlowChief anzubinden, müssen erstmals, die für den Datenaustausch relevanten Variablen, als OPC UA Variablen im PLCnext Engineer markiert werden. Sind alle Variablen markiert worden, können sie anschließend unter einem bestimmten Pfad in dem Adressraum des OPC UA Servers gespeichert werden. Im SCADA-System beginnt nun der Prozess ein Symbol herauszusuchen, worüber der FU dargestellt werden soll. Jede Einzelne Variable muss nun aus dem Adressraum des OPC UA Servers händisch rausgesucht und in FlowChief angelegt werden. In einem nächsten Schritt müssen sie mit dem Symbol für die Visualisierung des Aggregates einzeln verknüpft werden.
+
+Hiermit sollte ein Grundlegendes Verständnis für den Aktuellen Stand der Funktionsbausteine und dessen Anbindung an ein SCADA System wie FlowChief vermittelt worden sein.
+
+\subsection{Schwächenanalyse}
+Nachdem der aktuelle Zustand der Funktionsbausteine und deren Einbindung in SCADA-Systeme wie FlowChief ausführlich dargestellt wurde, ist es nun interessant, die vorhandenen Schwächen des Prozesses hervorzuheben, um den Kontext für die Ziele dieser Arbeit zu verdeutlichen und ein Konzept für einen weiterentwickelten Prozess zu entwerfen.
+
+Die erste Schwäche, die hervorgehoben werden sollte, ist die Form des Datenaustauschs. Jede Variable muss als OPC UA Variable markiert werden, wobei für jede Variable ein einzelner Datenpunkt im Adressraum angelegt wird. Darüber hinaus muss der Anwender die Bedeutung der Variable kennen, bevor er weiß, ob diese tatsächlich für die Visualisierung relevant ist. Gerade beim Erzeugen mehrerer Instanzen des Funktionsbausteins kann es schwer werden, den Überblick zu behalten. Dies zeigt, dass ein Standard fehlt, der einen einfachen Überblick über die benötigten Variablen gewährleistet. Die aktuelle Lage sorgt dafür, dass schon beim Heraussuchen und Anlegen der Daten viel Zeit verloren gehen kann.
+
+Eine weitere Schwäche im Prozess befindet sich in der Art und Weise, wie die Daten in FlowChief mit dem Symbol verknüpft werden. Die Variablen werden einzeln aus dem Adressraum des OPC UA-Servers gesucht und anschließend mit dem passenden Parameter des Symbols verknüpft. Dies sorgt einerseits für viel Redundanz und andererseits auch für einen erhöhten Aufwand bei der Visualisierung von größeren Anlagen. Moderne SCADA-Systeme bieten mittlerweile verschiedene Möglichkeiten, um Nutzern den Aufwand bei der Verknüpfung der Variablen mit Visualisierungsobjekten zu vereinfachen, wie beispielsweise das „Vertical Engineering“ von FlowChief (Vgl. Vertical Engineering).
+
+Außerdem ist zum jetzigen Zeitpunkt in Bezug auf Funktion und Nutzen des Funktionsbausteins keine Funktion implementiert, die das Steuern über ein SCADA-System wie FlowChief ermöglicht. Dabei kann das Steuern von Aggregaten über SCADA-Systeme durchaus von Kunden erwünscht sein.
+
+\subsection{Soll Konzept}
+Die Schwächenanalyse hat gezeigt, dass der aktuelle Prozess des Datenaustauschs und der Verknüpfung von Variablen in SCADA-Systemen wie FlowChief erhebliche Optimierungspotenziale aufweist. Um diese Schwächen zu adressieren, wird im folgenden Abschnitt ein Soll-Konzept vorgestellt. Dieses Konzept wird klare Ziele und Maßnahmen definieren, um die Effizienz zu steigern, Redundanzen zu minimieren und die Benutzerfreundlichkeit zu verbessern. Dabei wird insbesondere auf die Standardisierung des Datenaustauschs, die Vereinfachung der Variablenverknüpfung und die Implementierung von Steuerungsfunktionen über SCADA-Systeme eingegangen.
+
+Beginnend mit der Instanziierung des Funktionsbausteins sollte dem Anwender der Bibliothek intuitiv gezeigt werden, welche Daten aus dem Funktionsbaustein für die Visualisierung wichtig sind. Da die Anwender der Bibliothek später keine Rechte besitzen, um in den Funktionsbaustein hineinzuschauen, sollten alle Informationen über eine INOUT-Struktur ersichtlich sein. Diese Struktur soll alle wichtigen Fehler- und Störmeldungen enthalten, die für die Visualisierung interessant sind. Ziel ist es, dass der Anwender für jeden Baustein jeweils nur noch eine Struktur in der Variablenliste des PLCnext Engineer als OPC UA Variable markieren muss. Die Kommunikation zwischen SCADA-System und PLCnext findet somit über eine standardisierte Struktur statt, bei der alle benötigten Daten enthalten sind. Diese Vorgehensweise trägt zur Benutzerfreundlichkeit bei und schließt aus, dass der Anwender vergisst bestimmte Variablen als OPC UA Variable zu markieren. 
+
+In einem Nächsten Schritt sollen die Variablen mithilfe des von FlowChief implementierten „Vertical Engineerings“ automatisch angelegt und mit den Visualisierungsobjekten verknüpft werden. Das Händische Anlegen und verknüpfen der Variablen kann sehr fehleranfällig sein und ist zudem sehr zeitaufwendig. Das automatische Anlegen kann somit nicht nur Zeit ersparen, sondern gleichzeitig Fehler minimieren.
+
+Darüber hinaus soll es möglich sein, den Funktionsbaustein auch vom SCADA-System aus zu steuern. Hierzu sollen Kommandos vom SCADA-System zur PLCnext gesendet werden, die vom Funktionsbaustein entsprechend verarbeitet werden. Die Kommandos selbst sind ebenfalls Teil der standardisierten Struktur. In einem weiteren Schritt sollte sichergestellt werden, dass es eine Freigabe für die Kommandos gibt, die entscheidet, ob die Kommandos im SCADA-System angezeigt werden oder nicht. Dies gibt dem Anwender die Möglichkeit zu entscheiden, ob der Funktionsbaustein vom Leitsystem gesteuert werden kann.
+

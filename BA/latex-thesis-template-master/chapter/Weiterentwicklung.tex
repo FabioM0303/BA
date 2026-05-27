@@ -1,0 +1,45 @@
+\subsection{Identifikation des Problemraums}
+
+Aus der zugrunde liegenden Problemstellung dieser Arbeit geht hervor, dass der betrachtete Chatbot bislang keine Funktionen zur Personalisierung von Nutzeranfragen bereitstellt. Die resultierende Einschränkung des Systems lässt sich im Kern auf zwei zentrale Defizite zurückführen:
+
+\begin{itemize}
+	\item Die Unfähigkeit, vergangene Konversationen bei der Verarbeitung aktueller Anfragen zu berücksichtigen
+	\item Die fehlende Erfassung sowie Nutzung individueller Nutzerpräferenzen
+\end{itemize}
+
+Für die zielgerichtete Entwicklung eines geeigneten Artefakts ist ein vertieftes Verständnis des Problemraums unerlässlich. Neben der reinen Beschreibung der bestehenden Defizite ist es notwendig, die zugrunde liegenden Schwächen des aktuellen Systems sowie die relevanten Rahmenbedingungen systematisch zu analysieren. Aufbauend auf dieser Analyse erfolgt im weiteren Verlauf die Ableitung konkreter Zielsetzungen für das zu entwickelnde Artefakt.
+
+\subsubsection{Schwächenanalyse}
+
+Der derzeitige technische Stand des betrachteten Chatbots offenbart im Hinblick auf die identifizierte Problemstellung eine grundlegende strukturelle Schwäche. Eingehende Nutzeranfragen werden aktuell isoliert und sequenziell verarbeitet, ohne dabei Informationen aus vorherigen Interaktionen zu berücksichtigen.
+
+Zwar werden Konversationsdaten bereits zu Zwecken der Observability in einer Datenbank persistiert, jedoch erfolgt keine weiterführende Nutzung dieser Daten im Sinne einer semantischen Wiederverwendung. Insbesondere fehlt ein Mechanismus zur gezielten Erschließung und Integration historischer Konversationsinhalte in zukünftige Interaktionen.
+
+Folglich existiert kein vorgelagerter Prozess, der vor der eigentlichen Anfrageverarbeitung relevante Informationen—wie etwa Nutzerpräferenzen oder kontextspezifische Hinweise—aus der Datenbasis extrahiert und in die Eingabestruktur (Prompt) des Sprachmodells integriert. Diese fehlende Kontextanreicherung führt dazu, dass der Chatbot wiederholt Rückfragen stellen muss oder generische Antworten liefert, obwohl relevante Informationen aus vorangegangenen Interaktionen prinzipiell verfügbar wären.
+
+Zusammenfassend lässt sich festhalten, dass die zentrale Schwäche des Systems nicht in der Datenerfassung, sondern in der fehlenden semantischen Erschließung und Nutzung dieser Daten liegt.
+
+\subsubsection{Rahmenbedingungen}
+
+Die Entwicklung des Artefakts erfolgt unter Berücksichtigung technischer und organisatorischer Rahmenbedingungen, die maßgeblichen Einfluss auf die Gestaltung der Lösung haben.
+
+Zum einen ist das verfügbare Budget begrenzt und bewegt sich im Bereich von \dots\ bis \dots\,. Dies impliziert, dass sowohl Implementierungs- als auch Betriebskosten, insbesondere im Hinblick auf externe Dienste (z.\,B. Embedding-Modelle oder Vektordatenbanken), sorgfältig abgewogen werden müssen.
+
+Zum anderen ist eine enge Anbindung an die bestehende Systemarchitektur erforderlich. Das zu entwickelnde Artefakt sollte daher möglichst modular gestaltet sein und sich mit geringem Eingriff in die bestehende Infrastruktur integrieren lassen. Eine vollständige Neugestaltung des Systems ist nicht vorgesehen.
+
+Darüber hinaus muss die Lösung mit den vorhandenen Datenstrukturen kompatibel sein und bestehende Persistenzmechanismen sinnvoll erweitern, ohne deren Stabilität oder Performance negativ zu beeinflussen.
+
+\subsubsection{Ziele}
+
+Basierend auf der zuvor durchgeführten Analyse des Problemraums lassen sich folgende zentrale Zielsetzungen für das zu entwickelnde Artefakt ableiten:
+
+\begin{itemize}
+	\item Entwicklung eines Mechanismus zur semantischen Erschließung von Konversationsdaten, insbesondere durch die Transformation von Textinhalten in Vektorrepräsentationen
+	\item Implementierung einer Vektordatenbank zur effizienten Speicherung und Abfrage semantisch ähnlicher Konversationsabschnitte
+	\item Realisierung eines Retrieval-Ansatzes, der relevante historische Informationen kontextabhängig identifiziert und bereitstellt
+	\item Integration der gewonnenen Kontextinformationen in den Anfrageverarbeitungsprozess zur Verbesserung der Antwortqualität
+	\item Ermöglichung der automatisierten Erkennung und Berücksichtigung von Nutzerpräferenzen in zukünftigen Interaktionen
+	\item Sicherstellung einer nahtlosen Integration in die bestehende Systemlandschaft unter Berücksichtigung der definierten Rahmenbedingungen
+\end{itemize}
+
+Ziel des Artefakts ist es somit, die bestehende statische und kontextunabhängige Verarbeitung von Nutzeranfragen durch eine dynamische, kontextbasierte und personalisierte Interaktion zu erweitern.

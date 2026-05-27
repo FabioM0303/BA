@@ -1,0 +1,84 @@
+\section{Weiter entwicklung}
+\subsection{Erstellung der OPC UA Struktur}
+
+Die Erstellung der OPC UA Struktur bildet in dieser Praxisarbeit das Fundament für die Weiterentwicklung des Funktionsbausteins. Auf ihr baut die gesamte Visualisierung und der Datenaustausch zwischen PLCnext und FlowChief auf, weshalb mit ihr unterschiedliche Anforderungen einhergehen. Die Struktur lässt sich allgemein in 4 verschiedene Kategorien einteilen, die im Folgenden näher erläutert werden.
+
+Zuerst enthält die Struktur Metadaten, die Informationen über das Aggregat selbst enthalten wie z.B. den Anlagenname und Anlagenkennzeichnungsschlüssel. Diese Daten werden im SCADA-System benötigt, um das Aggregat eindeutig zuordnen zu können. Zusätzlich befindet sich in dieser Unterstruktur eine Variable, durch die der Funktionsbaustein identifiziert wird. Die Variable wird im Ausblick auf die Entwicklung weiterer Funktionsbausteine größere Relevanz gewinnen. Dieser Wert beschreibt nämlich, welche Art von Aggregat der Funktionsbaustein steuert. Dies ist eine Information, die im weiteren Verfahren in der XML-Datei benötigt wird, um die richtige Struktur auszulesen. Dieses Prinzip wird im Kapitel … erneut aufgegriffen und beschrieben.
+
+Damit der Funktionsbaustein in der Visualisierung Detail getreu dargestellt werden kann, besitzt die Struktur alle nötigen Statusmeldungen, um den Zustand des Motors darzustellen und Ferndiagnosen zu ermöglichen. Hierbei lässt sich zwischen Stör- und Betriebsmeldungen unterscheiden. Störmeldungen geben Auskunft darüber, dass der Antrieb des Motors aktuell durch bestimmte Fehler gehemmt wird, während Betriebsmeldungen Auskunft darüber geben, ob der Antrieb läuft und welcher Betriebsmodus aktiviert ist. Eine weitere Statusmeldung ist die Betriebsfreigabe für das SCADA-System, die angibt, ob der FU aktuell über die Visualisierung gesteuert werden kann oder nicht.
+
+Um zu gewährleisten, dass der FU auch vom SCADA-System gesteuert werden kann, enthält die Struktur Befehle, die vom FU verarbeitet werden können. Hierzu gehören Befehle zum Wechseln der Betriebsart zwischen Automatik und Hand und zum anderen die Möglichkeit Fehlermeldungen zu quittieren, wenn die Fehler nicht mehr aktiv sind und der Betrieb des Motors wieder freigegeben werden soll.
+
+Zuletzt besitzt die Struktur Parametrierungen. Der Sinn hinter den Parametrierungen ist es das Visualisierungsobjekt innerhalb des Bausteins visuell anpassen zu können. Mit ihnen können bestimmte Teile in der Visualisierung Farblich hervorgehoben oder ausgeblendet werden. Diese Funktion wird eingeführt, um die Befehl Buttons bei der Anwahl aufleuchten zu lassen, oder komplett auszublenden. Mit Ausblick auf spätere Weiterentwicklungen könnten die Parametrierungen weitere Funktionalitäten erhalten.
+
+Diese Struktur ist individuell an die Anforderungen des Motor Funktionsbausteins angepasst und enthält somit alle für die Weiterentwicklung relevanten Variablen. Auf dieser Grundlage kann ein passendes Symbol erstellt und der Funktionsbaustein weiterentwickelt werden.
+
+\subsection{Repräsentatives Symbol}
+
+Mithilfe eines von FlowChief bereitgestellten Tool zum Zeichnen von Prozessbildern, ist im weiteren Verlauf ein Symbol entstanden, welches repräsentativ für den Motor Funktionsbaustein steht. Dieses Symbol ist in der Abbildung veranschaulicht. Im folgenden wird näher erklärt wie dieses Symbol konzipiert ist.
+
+Allgemein enthält das Symbol drei verschiedene Fenster. Das Fenster links oben repräsentiert die Schalterstellung des Bedienschalters am Schaltschrank. Sollte der Bedienschalter im Hand Betriebsmodus sein, wird im Fenster der passende Text zur Betriebsmeldung ausgegeben. Sollte eine Störmeldung an den Eingängen des Funktionsbausteins vorliegen, wird ein Ausrufezeichen in diesem Fenster angezeigt und der Hintergrund wird rot gefärbt. Dieser Zustand bleibt bis zur Quittierung der Fehler erhalten. Störmeldungen sollen darüber hinaus eine höhere Priorität als Betriebsmeldungen besitzen, weshalb das Fenster bei anliegenden Störungen immer rot gefärbt bleibt.
+
+Das Runde Symbol in der Mitte der Abbildung stellt den Status des Antriebes dar. Sollte der Motor eingeschalten werden leuchtet das Symbol Grün auf. Sollte der Motor ausgeschalten sein, besitzt das Symbol keine Füllung. Dieses Symbol enthält zudem das individuelle Erkennungsmerkmal für den Motor und sorgt dafür, dass er im Leitbild von anderen Symbolen differenziert werden kann.
+
+Im Fenster oben rechts wird angezeigt, ob die Fern Steuerung des Motors aktuell freigegeben ist. Dabei können die zwei Meldungstexte Fern für die Fern Steuerung und Ort für die lokale Steuerung angezeigt werden. Dies sorgt dafür, dass der Betrachter genau weiß, ob der Motor aktuell über das Leitbild in FlowChief gesteuert werden darf.
+
+Darüber hinaus ist das Symbol interaktiv und öffnet ein Interaktionsfenster, wenn es angeklickt wird (siehe Abbildung). Dieses Interaktionsfenster liefert Informationen über Betriebsmeldungen, Betriebszeit sowie ausgewählte Befehle. Ist die Fernsteuerung für den Motor aktiv, werden in diesem Fenster die Befehlsbuttons eingeblendet und können bedient werden. Der aktivierte Befehl wird durch ein grünes Aufleuchten des entsprechenden Buttons angezeigt. Hat jedoch die Steuerung vor Ort Priorität, werden die Befehlsbuttons ausgeblendet und gesperrt. Dabei sind die Buttons genau an die Parameterization Variable in der OPC UA Struktur angepasst und ändern ihren Zustand abhängig von dem mitgesendeten Integerwert an. 
+
+Zusätzlich enthält das Interaktionsfenster ein Meldungsfenster, in dem verschiedene Meldungen protokolliert werden. Zu jeder Meldung oder jedem Befehl wird ein Zeitstempel und ein Meldungstext aufgezeichnet.
+
+\subsection{Weiterentwicklung des Funktionsbausteins}
+
+\subsubsection{Parametrierung}
+Eine weitere Implementierung ist, dass die Befehl Buttons im Interaktionsfenster des repräsentativen Symbols, durch Parametrierungen innerhalb des Funktionsbausteins visuell angepasst werden. Für die Realisierung wird ein Integer genutzt, der aktuell Werte von null bis fünf annehmen kann. Jeder Wert besitzt eine definierte Bedeutung, die an die Einstellungen des repräsentativen Symbols in FlowChief angepasst ist. Je nachdem, welchen Wert die Variable nach dem Durchlaufen des Programms zugewiesen bekommt, werden Befehle im Interaktionsfenster entweder ausgeblendet oder farblich hervorgehoben. Der Integer Wert ist in der Parameterization Unterstruktur enthalten und wird mit der gesamten Struktur übertragen.
+
+\subsubsection{Neue Schaltlogik}
+Im Soll Konzept (Kapitel 3.4) wurde die Anforderung gestellt, dass neben der lokalen Steuerung auch die Fernsteuerung des Funktionsbausteins ermöglicht werden soll. Für die Realisierung einer solchen Schaltung wurde der Funktionsbaustein um eine neue Eingangsvariable IN_LX_Priority erweitert. Das Konzept der neuen Schaltlogik ist In der Abbildung… in Form eines Ablaufdiagramms dargestellt.
+
+Mit den neuen Eingangsvariablen wird eine Priorität gesetzt, die allgemein entscheidet welche Schaltung freigegeben werden soll. Für die Implementierung dieser Funktion in zukünftige Kundenprojekte, kann mit dem Kunden vereinbart werden, wie das Schalten zwischen den Logiken umgesetzt werden soll. Dies kann beispielsweise über einen weiteren Schalter am Schaltschrank oder ein dauerhaftes Signal an dem entsprechenden Eingang des Funktionsbausteins festgelegt werden.
+
+Bei der Fernsteuerung kann der Funktionsbaustein über das Interaktionsfenster des FlowChief Symbols gesteuert werden. Hierüber kann der Motor ebenfalls in den Automatik Modus oder Hand Modus versetzt werden. Im Handmodus können über das Interaktionsfenster anschließend Fahrbefehle an den Motor gesendet werden. Der FlowChief Automatik Modus funktioniert Äquivalent zum Automatik Modus des Bedienschalters und bekommt seine Fahrbefehle über die IN_LX_AutoStart und IN_LX_AutoStop Eingänge.
+
+Die alte Schaltlogik des Funktionsbausteins wird ab sofort für die lokale Schaltung genutzt und funktioniert weiterhin, wie in Kapitel 3.2.1 beschrieben. Dadurch musste sie nicht verändert werden und kann neben der neu entstandenen Fernsteuerung existieren. Die Fernsteuerung hingegen ist neu entstanden, weshalb die Umsetzung und Einbindung in den bestehenden Code im Folgenden Unterkapitel näher erklärt wird.
+
+\subsubsection{Umsetzung der Fernschaltung}
+Der Ablauf der Fernschaltung lässt sich in 3 Phasen gliedern:
+-	Priorität setzen: Die Priorität bestimmt, Welche Schaltung aktiv ist und welcher Teil des Codes ausgeführt werden darf
+-	Auswertung des Betriebsmodus: Hier wird der Betriebsmodus ausgewertet, der bestimmt wann der Antrieb laufen darf 
+-	Fahrbefehl: Hier wird der Fahrbefehl für den Antrieb des Motors an die Ausgangsvariable übergeben
+
+Die Priorität wird durch einen digitalen Eingang bestimmt. Wenn der Eingang ‘IN_LX_Priority’ nicht aktiv ist, wird nur der Code für die lokale Steuerung berücksichtigt. Sollte ‘IN_LX_Priority’ jedoch aktiv sein, wird nur der Code für die Fernsteuerung ausgelesen. Dies wird durch einfache IF-Anweisungen realisiert, bei denen die Priorität als Bedingung genutzt wird. Daher muss die Variable IN_LX_Priority für die Fernschaltung zwangsweise aktiv sein. Andernfalls werden die Befehle des Interaktionsfensters nicht ausgewertet.
+
+Wird im Interaktionsfenster ein Betriebsmodus ausgewählt, wird der Befehl in einem internen Funktionsbaustein ausgewertet. Dieser stellt sicher, dass bei den Befehlen nur vordefinierte Zustände herrschen können. Hierdurch wird verhindert, dass der Hand Modus und der Automatik Modus gleichzeitig aktiv sein können. Im Code wird dabei für jeden ausgewählten Befehl im Interaktionsfenster ein Trigger ausgelöst, der anschließend den passenden Zustand herstellt. Darüber hinaus wird in diesem Funktionsbaustein verhindert, dass alle Modi Gleichzeitig deaktiviert sein können, um unerwünschte Seiteneffekte auszuschließen. Der Baustein sorgt beim Eintritt des Szenarios dafür, dass standardmäßig der Hand Modus aktiviert und der Motor ausgeschalten wird. 
+
+Nachdem dafür gesorgt ist, dass die Betriebsmodi richtig gesetzt wurden, wird als nächstes der Fahrbefehl ausgewertet. Hierzu wird in einem weiteren Internen Funktionsbaustein entweder ein Start oder Stopp Signal erzeugt. 
+
+Damit im Baustein ein Start Signal erzeugt wird, muss eine Kombination von unterschiedlichen Bedingungen für die „LX_StartSignalRight“ Variable erfüllt werden. Die Bedingung ist das im Hand Modus, der EIN Befehl gesendet wird oder im Auto Modus ein Start Signal am „IN_LX_AutoStartRight“ Eingang vorliegt. Die Bedingung ist jedoch erst dann vollständig erfüllt, wenn zu diesem Zeitpunkt keine Fehler bzw. Störungen aktiv sind. Für die Umsetzung werden die Bedingungen im Code mit den richtigen logischen Operatoren verknüpft (vgl. abbildung). Das Stopp Signal wird im Code auf dieselbe Weise erzeugt. Dabei unterscheiden sich nur die Kombinationen aus Bedingungen.
+Das Jeweils erzeugte Signal muss jedoch erst freigegeben werden, bevor ein Befehl an den Ausgang des Funktionsbausteins gesetzt wird. Dies soll verhindern, dass ein Start und Stopp Signal gleichzeitig im Funktionsbaustein ausgegeben werden kann. Hierzu wird ein Set-Reset-Flipflop verwendet. Sobald die Variable LX_StartSignalRight einen Impuls erzeugt und kein Fehler aktiv ist, gibt das Set-Reset-Flipflop an seinem Ausgang so lange ein positives Signal aus, bis es durch ein Stopp Signal zurückgesetzt wird. Der Ausgang des Set-Reset-Flipflops erzeugt somit das Finale Signal und kann somit auf die Ausgänge des Funktionsbausteins geschrieben werden.
+
+
+\subsection{Vertical Engineering}
+
+Das Vertical Engineering von FlowChief bietet die Möglichkeit, Visualisierungsobjekte mithilfe selbst erstellter Datenstrukturen automatisiert und vollständig zu generieren. Dadurch entfällt das manuelle Anlegen der Variablen in FlowChief, da diese nun über eine XML-Datei automatisch eingelesen und mit einem Visualisierungsobjekt verknüpft werden. Im Rahmen dieser Praxisarbeit wurde eine solche XML-Datei auf Basis der OPC UA Struktur erstellt, die das automatisierte Anlegen der Variablen für das repräsentative Symbol aus Kapitel 4.2 ermöglicht.
+
+Die Funktion zum Einlesen der XML-Datei ist in der FlowChief-Anwendung fest definiert. Damit die Funktion fehlerfrei arbeiten kann, muss für jedes Element der OPC UA eine Vorlage definiert werden. Die Vorlage gibt vor, wie das Element in FlowChief angelegt werden soll. Da die OPC UA Struktur für den Motor Funktionsbaustein standardisiert worden ist, bleibt die übertragene Struktur immer gleich und kann somit immer auf dieselbe Art und Weise von der FlowChief Funktion eingelesen werden. Die Vorlage zum Anlegen einer Variable wird in der Abbildung exemplarisch dargestellt, um ein besseres Verständnis für das Vorgehen der Funktion herzustellen. 
+
+Zuerst benötigt die Funktion einen passenden Typen, der für das Element aus der OPC UA Struktur definiert werden soll. Dieser ist nicht nur vom Datentyp, sondern auch vom Verwendungszweck der Variable abhängig. FlowChief definiert in diesem Zusammenhang individuelle Datentypen, weshalb vor allem der Verwendungszweck eine wichtige Rolle spielt. Folgende Datentypen werden für die OPC UA Struktur verwendet:
+
+\begin{itemize}
+	\item \textbf{Digital Input (DI)} Bei diesem Typen liest die Funktion den Wert aus dem OPC UA-Adressraum aus. Das Überschreiben des Wertes ist hierbei nicht möglich. Daher wird dieser Typ vor allem für die Statusmeldungen der Struktur verwendet.
+	\item \textbf{Digital Output (DO)} Variablen mit diesem Typ können über FlowChief parametriert werden. Im Gegensatz zu den Digital Input können Variablen mit diesem Typ sowohl gelesen als auch überschrieben werden. Dadurch kann FlowChief direkt auf den digitalen Wert auf der Steuerung zugreifen und den entsprechenden Wert der Variable überschreiben. Aus diesem Grund wird dieser Typ für alle Befehle der OPC UA Struktur verwendet.
+	\item \textbf{Analog Input (AI)} Dieser Typ repräsentiert kontinuierliche Werte, die von der Funktion eingelesen werden können, um physikalische Größen wie beispielsweise die Drehzahl des Motors darzustellen.
+	\item \textbf{Impulszähler (IZ)} Dieser Typ wird für die Darstellung der Betriebszeit verwendet.
+	
+\end{itemize}
+
+Der Typ ist für jedes Element des Objekts in dem Tag pv unter der Variable type angegeben.
+
+Zudem muss sichergestellt werden, dass die Funktion Zugriff auf die Variable der OPC UA Struktur hat. Der Individuelle Pfad, unter dem ein Objekt im OPC UA Adressraum gespeichert ist, wird beim Anlegen vom Anwender angegeben. Die Funktion benötigt jedoch zusätzlich für jede Variable des Objektes einen Pfad, unter dem sie in der Struktur eindeutig identifiziert werden kann. Dieser Pfad befindet sich im Code zwischen den Tags dataitemid. Die Funktion fügt diesen Pfad an den individuellen Pfad des Objektes, und kann daraufhin die entsprechende Variable im Adressraum finden.
+
+Zudem ist es wichtig, nähere Informationen über die Variablen zu definieren, sodass der Anwender später weiß welchen Nutzen sie hat. Für jede Variable ist daher in der Vorlage ein Meldungstext angegeben, der nähere Informationen über die Art der Statusmeldung enthält. Darüber hinaus ist für jedes Element eine Beschreibung für die Bedeutung des übertragenen Wertes angegeben. Dadurch weiß der Anwender wie der Wert der Variable zu deuten ist.
+
+Ein weiteres wichtiges Feature der XML-Datei ist, dass sie zukünftig die Darstellung aller unterschiedlichen Typen von Funktionsbausteinen unterstützt. Hierfür kommt die „Typ“ Variable aus den Metadaten der OPC UA Struktur ins Spiel (vgl. Abbildung). Durch eine Bedingung wird der Integer Wert der Variable mit den definierten Werten in dem Conditions-Tag abgeglichen, wodurch ein Einsprungs Ort für die Funktion festgelegt wird. Die Bedingung gewährleistet, dass alle Funktionsbausteine über eine einzige XML-Datei dargestellt werden können und nicht für jeden Baustein eine separate XML-Datei existieren muss. 
+
+Die vollständige XML-Datei sorgt nun dafür, dass die Daten in dem Ordner der Anlage automatisch angelegt werden (vgl. anhang). Dieser Ordner ist mit dem Visualisierungsobjekt verknüpft und kann im weiteren verfahren per Drag & Drop in das Prozessbild eingefügt werden.

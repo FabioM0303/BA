@@ -1,0 +1,5 @@
+\section{Hauptteil}
+
+\subsection{Testumgebung}
+
+Der Aufbau des Projektes ähnelt dem der Automatisierungspyramide sehr. Auf der Feldebene befinden sich später alle Maschinen wie z.B. Pumpen, Motoren und Gebläse. Diese werden auf der Steuerungsebene von der PLCnext angesteuert. Die PLCnext ist mit einem integrierten OPC UA Server ausgestattet, weshalb die Kommunikation über OPC UA nicht erst neu programmiert werden muss, sondern lediglich die passenden Parameter im PLCnext Engineer konfiguriert werden müssen. Auf der Steuerung befinden sich alle nötigen Funktionsbausteine und Strukturen zum Ansteuern der einzelnen Komponenten und Symbolen. Um jedoch mit dem SCADA System zu kommunizieren, benötigt die SPS einen Internetzugang. Dafür wird ein TC-Router an die SPS angeschlossen, der über Mobilfunk mit der Prozessebene kommunizieren kann. Die Kommunikation findet über einen VPN-Tunnel statt. Für die Prozessebene wird ein externer Server genutzt auf dem sowohl der OPC UA Server als auch der FlowChief Server aufgespielt sind. Der OPC UA Server empfängt dabei die Daten von der SPS und stellt sie dann FlowChief zur Verfügung. 

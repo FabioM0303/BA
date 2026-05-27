@@ -1,0 +1,38 @@
+@article{Gao2023RetrievalAugmentedGF,
+  title={Retrieval-Augmented Generation for Large Language Models: A Survey},
+  author={Yunfan Gao and Yun Xiong and Xinyu Gao and Kangxiang Jia and Jin Pan and Yuxi Bi and Yi Dai and Jiawei Sun and Qianyu Guo and Meng Wang and Haofen Wang},
+  journal={ArXiv},
+  year={2023},
+  volume={abs/2312.10997},
+  url={https://api.semanticscholar.org/CorpusID:266359151}
+}
+
+@misc{bousetouane2025agenticsystemsguidetransforming,
+      title={Agentic Systems: A Guide to Transforming Industries with Vertical AI Agents}, 
+      author={Fouad Bousetouane},
+      year={2025},
+      eprint={2501.00881},
+      archivePrefix={arXiv},
+      primaryClass={cs.MA},
+      url={https://arxiv.org/abs/2501.00881}, 
+}
+
+@misc{xiao2025foundationslargelanguagemodels,
+      title={Foundations of Large Language Models}, 
+      author={Tong Xiao and Jingbo Zhu},
+      year={2025},
+      eprint={2501.09223},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2501.09223}, 
+}
+
+@misc{wang2024craftingpersonalizedagentsretrievalaugmented,
+      title={Crafting Personalized Agents through Retrieval-Augmented Generation on Editable Memory Graphs}, 
+      author={Zheng Wang and Zhongyang Li and Zeren Jiang and Dandan Tu and Wei Shi},
+      year={2024},
+      eprint={2409.19401},
+      archivePrefix={arXiv},
+      primaryClass={cs.CL},
+      url={https://arxiv.org/abs/2409.19401}, 
+}

@@ -1,0 +1,47 @@
+\section{Praxisteil}
+
+\label{Kapitel3}
+
+\subsection{Vorstellung des Praxisunternehmens}
+
+Phoenix Contact ist ein global tätiges Familienunternehmen, das sich mit dem strategischen Ziel zur Umsetzung der „All Electric Society“ in der Elektroindustrie positioniert. Die Produkte von Phoenix Contact bieten unterschiedliche Lösungen für die Bereiche Automatisierung, Vernetzung und Elektrifizierung. Diese Arbeit wurde in der Abteilung "Data Science \& Engineering - Generative AI" (DSE GenAi) verfasst, die ein Teil der Muttergesellschaft Phoenix Contact GmbH \& Co.KG ist.
+
+Die Abteilung DSE GenAi setzt sich wie der Name bereits verrät, für Lösungen im Bereich der Generativen Künstlichen Intelligenz ein. Diese Lösungen werden ausschließlich innerhalb des Unternehmens eingesetzt und verfolgen die Absicht verschiedenste Prozesse mithilfe Intelligenter Assistenten zu unterstützen. In diesem Rahmen sind in der Vergangenheit beispielsweise Projekte wie ein Enterprise-Chatbot, ein Coding Assitent und ein Techbot entstanden.
+
+Der Enterprise Chatbot namens "Phoenix Contact Intelligent Assistant" (PIA) spielt für diese Arbeit eine Zentrale Rolle. Es handelt sich dabei um einen Chatbot, der mit Unternehmensdaten erweitert wurde und dadurch präzisere Antworten über Phoenix Contact bereitstellen kann. Da sich die Umwelt im Bereich der künstlichen Intelligenz stetig weiterentwickelt, neue KI Modelle veröffentlicht werden und die Erwartungen der Nutzer zunehmend steigen, ist es auch Zukünftig wichtig, dass vorhandene Projekte wie der Enterprise Chatbot von der Abteilung evaluiert und weiterentwickelt werden.
+
+
+
+\subsection{Ist-Analyse}
+
+%In einem nächsten Schritt soll der aktuelle Stand des Projekts auf dem diese Arbeit aufbaut, näher analysiert werden. Hierzu wird zunächst die aktuelle Architektur des Enterprise Chatbots PIA vorgestellt. Zur Illustration dieser Architektur dient die Abbildung \ref{arch}.
+
+%Insgesamt basiert PIA auf einer Präsentationsschicht und einer Orchestrierungsschicht. Die Präsentationsschicht besteht hauptsächlich aus einem React Frontend in dem der Nutzer die Möglichkeit hat einen Chat zu starten und Prompts zu formulieren. Er kann selbst definieren, ob eine interne Wissensbasis für die Beantwortung genutzt werden soll oder nicht. Diese Design Entscheidung baut auf dem im Grundlagen Teil vorgestellten RAG-Ansatz auf.
+
+%Die Kommunikation zwischen Frontend und der Orchestrierungsschicht erfolgt über FastAPI Schnitstellen. Sobald der Prompt vom Nutzer abgeschickt wird, wird in der Orchestrierungsschicht eine RAG-Pipeline ausgelöst. Der erste Schritt dabei ist eine Routing Function die bestimmt . 
+
+Da der Enterprise Chatbot PIA die Grundlage für diese Arbeit darstellt, ist es sinnvoll zunächst zu analysieren auf welchen Technologischen Stand sich dieser bereits befindet. Dieser Abschnitt konzentriert sich dabei auf die Architektur, die zum näheren Verständnis in der Abbildung \ref{arch} illustriert wird.
+
+Insgesamt unterteilt sich die Architektur in eine Präsentations- und Orchestrierungsschicht. Die Präsentationsschicht basiert hauptsächlich auf einem React Frontend, worüber Authentifizierte Nutzer die Möglichkeit haben eigene Chats zu starten und Anfragen zu formulieren. Hierbei entscheidet der Nutzer selbst, ob eine interne Wissensbasis für die Antwortgenerierung genutzt werden soll.
+
+Die Kommunikation zwischen Frontend und Orchestrierungsschicht erfolgt über FastAPI-Schnittstellen. Sobald ein Prompt durch den Nutzer abgeschickt wird, wird innerhalb der Orchestrierungsschicht eine Verarbeitungspipeline ausgelöst. Der erste Schritt dieser Pipeline ist eine Routing Function, welche bestimmt, ob eine Anfrage direkt durch ein Sprachmodell beantwortet werden kann oder ob zusätzlich internes Wissen benötigt wird. Falls keine interne Wissensbasis erforderlich ist, wird die Anfrage unmittelbar an Azure OpenAI Services weitergeleitet.
+
+Wird hingegen internes Wissen benötigt, startet eine mehrstufige RAG-Pipeline. Zunächst erfolgt eine Transformation der Benutzeranfrage, um die Suchanfrage für nachfolgende Retrieval-Prozesse zu optimieren. Anschließend wird mithilfe von FastText die Sprache der Anfrage identifiziert. Da das System mehrsprachig ausgelegt ist, ist zusätzlich eine Übersetzung der Anfrage in Deutsch oder Englisch vorhergesehen.
+
+Die eigentliche Informationssuche basiert auf einem hybriden Suchansatz. Hierbei werden klassische schlüsselwortbasierte Suchverfahren mit semantischer Vektorsuche kombiniert. Die Suche wird über Azure AI Search realisiert und anschließend durch ein Reranking ergänzt, um besonders relevante Dokumente höher zu priorisieren. Die Ergebnisse verschiedener Suchprozesse werden danach zusammengeführt und anhand eines Similarity Thresholds gefiltert, sodass nur ausreichend relevante Inhalte berücksichtigt werden.
+
+Im Anschluss erfolgt das sogenannte Context Filling, bei dem die gefundenen Dokumente in den Kontext der Anfrage integriert werden. Auf Basis dieses erweiterten Kontextes wird schließlich mithilfe von Azure OpenAI Services eine Antwort generiert und an das Frontend zurückgegeben.
+
+Neben der eigentlichen Anfrageverarbeitung beinhaltet die Architektur zusätzlich eine Observability-Schicht. Diese dient der Überwachung und Analyse des Systems. Hierfür kommen unter anderem Langfuse zur Nachverfolgung von Prompts und Modellantworten, Azure Blob Storage zur Datenspeicherung, Snowflake zur Analyse strukturierter Daten sowie Tempo und Grafana zur Visualisierung und Überwachung von Systemmetriken zum Einsatz.
+
+\begin{figure}[hbt]
+	\centering
+	\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+		\caption{PIA Architektur} % Überschrift
+		\includegraphics[width=1\textwidth]{img/arch.png}\\ % Pfad
+		\label{arch}
+	\end{minipage}
+\end{figure}
+
+\subsection{Schwächenanalyse}
+
