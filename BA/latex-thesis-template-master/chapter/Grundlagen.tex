@@ -1,30 +1,32 @@
 %!TEX root = ../Thesis.tex
 \section{Theoretische Grundlagen}
 
-
 \subsection{Large Language Models}
 
 \subsubsection{Definition und Hintergrund}
-Large Language Models (LLMs) bilden einen fundamentalen Baustein für das in dieser Arbeit entwickelte Konzept. Allgemein lassen sie sich als Systeme verstehen, die Verfahren aus den Bereichen Deep Learning und Natural Language Processing (NLP) verwenden, um natürliche Sprache verstehen und generieren zu können. Durch diese Fähigkeit lassen sie sich in den Bereich der Generativen Künstlichen Intelligenz einordnen.
 
-Neuronale Netze bilden hier die technische Grundlage und sind an der Funktionsweise biologischer Gehirne angelehnt. Sie bestehen aus einer großen Anzahl künstlicher Neuronen, die über sogenannte Gewichte miteinander verbunden sind und in mehreren Schichten organisiert werden. Während des Trainings werden diese Gewichte kontinuierlich angepasst, sodass das Modell relevante Muster in den Daten erlernen kann. Auf dieser Grundlage wird die interne Struktur des Netzwerks iterativ optimiert, um möglichst präzise Vorhersagen treffen zu können. Aufgrund dieser Eigenschaften eignen sich neuronale Netze insbesondere für komplexe Klassifikations- und Vorhersageaufgaben.
+Large Language Models (LLMs) haben sich in den Letzten Jahren zu einem bedeutenden Forschungsbereich der generativen künstlichen Intelligenz und des Natural Language Processings entwickelt. Der Begriff Large Language Modell bedeutet übersetzt so viel wie großes Sprachmodell und beschreibt allgemein ein System, dass in der Lage ist natürliche Sprache zu verarbeiten und zu generieren.
 
-LLMs stellen eine spezielle Art von Neuronalen Netzen dar, die anhand großer Mengen an Textdaten trainiert werden. Ihre Aufgabe ist es anhand einer Sequenz von sogenannten Token die nachfolgenden Token der Sequenz vorherzusagen. Token können in diesem Zusammenhang ganze Wörter, Wortteile oder Zeichen darstellen. Das Ergebnis des Prozesses ist dabei vollständig davon abhängig, wie das Neuronale Netz seine Gewichte innerhalb des Trainings angepasst hat. 
+Das heutige Verständnis von LLMs ist dabei eng mit der sogenannten Transformer-Architektur verbunden, die 2017 durch Vaswani et al. in der Arbeit Attention Is All You Need vorgestellt wurde und den Bereich des NLP revolutioniert hat. Der Hintergrund dieser Arbeit war es die Limitationen von rekurrenten neuronalen Netzen zu Adressieren. Aufgrund einer Sequenziellen Verarbeitung von Textsequenzen, konnten sie Abhängigkeiten zwischen weit auseinanderliegenden Wörtern nur eingeschränkt berücksichtigen, da Informationen über lange Sequenzen immer weiter verloren gingen.
 
-Das Training besteht allgemein aus 2 Bereichen: dem Pre-Training und dem Fine-Tuning. Beim Pre-Training wird das Modell auf einer sehr großen, meist unstrukturierten Textmenge trainiert – beispielsweise aus dem Internet, Büchern oder wissenschaftlichen Artikeln. Ziel ist es, dem Modell ein breites sprachliches und inhaltliches Grundverständnis zu vermitteln, indem es lernt, Tokens auf Basis vorheriger Sequenzen vorherzusagen. Dieser Schritt ist rechenintensiv und bildet die Grundlage für die späteren Fähigkeiten des Modells.
+Vaswani et al. stellen in ihrer Arbeit mit dem sogenannten Self-Attention-Mechanismus eine Lösung für dieses Problem vor. Self Attention erlaubt es dem Modell die Beziehung von einem Wort zu jedem anderen Wort im Kontext parallel zu erfassen, wodurch es lernt welche Wörter für das Verständnis eines bestimmten Wortes besonders wichtig sind. Dadurch können Kontextinformationen und semantische Beziehungen auch über längere Textsequenzen hinweg berücksichtigt werden, ohne dass diese verloren gehen.
 
-Im Anschluss erfolgt das Fine-Tuning, bei dem das vortrainierte Modell auf einem kleineren, domänenspezifischen oder aufgabenspezifischen Datensatz weiter trainiert wird. Dadurch kann das Modell gezielt auf bestimmte Anwendungsfälle, Verhaltensweisen oder Kommunikationsstile angepasst werden. Eine verbreitete Methode des Fine-Tunings ist das sogenannte Reinforcement Learning from Human Feedback (RLHF), bei dem menschliche Bewerter die Ausgaben des Modells beurteilen und so dessen Antwortqualität iterativ verbessert wird.
+\subsubsection{Funktionsweise}
 
-Durch diesen Trainingsprozess und der wiederholten Vorhersage des wahrscheinlich nächsten Token können LLMs zusammenhängende Texte generieren und sprachliche Kontexte berücksichtigen. Es ist jedoch wichtig zu erwähnen, dass es sich dabei um kein echtes tiefgehendes Verständnis von Menschlicher Sprache handelt, sondern lediglich um probabilistische Vorhersagen. Aus diesem Grund kann es vorkommen, dass inhaltlich falsche oder frei erfundene Informationen erzeugt werden. Dieses Phänomen wird als Halluzination bezeichnet. Halluzinationen entstehen insbesondere dann, wenn dem Modell relevante Kontextinformationen fehlen oder Wahrscheinlichkeitsmuster aus den Trainingsdaten zu fehlerhaften Schlussfolgerungen führen.
+Neuronale Netze bilden die technische Grundlage von LLMs und sind an der Funktionsweise biologischer Gehirne angelehnt. Sie bestehen aus einer großen Anzahl künstlicher Neuronen, die über sogenannte Gewichte miteinander verbunden sind und in mehreren Schichten organisiert werden. Während des Trainings werden diese Gewichte kontinuierlich angepasst, sodass das Modell relevante Muster in den Daten erlernen kann. Auf dieser Grundlage wird die interne Struktur des Netzwerks iterativ optimiert, um möglichst präzise Vorhersagen treffen zu können. Aufgrund dieser Eigenschaften eignen sich neuronale Netze insbesondere für komplexe Klassifikations- und Vorhersageaufgaben.
 
-\subsubsection{Transformer-Architektur}
-Ein Großteil der modernen LLMs basiert dabei auf der sogenannten Transformer-Architektur, die 2017 durch Forschende von Google Research in der Arbeit Attention Is All You Need vorgestellt wurde und den Bereich des NLP revolutioniert hat. 
+Die Grundlegende Funktionsweise eines LLMs besteht somit darin, ein Neuronales Netz anhand einer Sequenz von sogenannten Token die nachfolgenden Token der Sequenz vorhersagen zu lassen. Token können in diesem Zusammenhang ganze Wörter, Wortteile oder Zeichen darstellen. Das Ergebnis des Prozesses ist dabei vollständig davon abhängig, wie das Neuronale Netz seine Gewichte innerhalb des Training angepasst hat.
 
-Der Hintergrund dieser Arbeit war es die Limitationen des damaligen State-of-the-Art Ansatzes rekurrenter neuronaler Netze zu Adressieren. Aufgrund einer Sequenziellen Verarbeitung von Textfolgen, konnte das Modell Abhängigkeiten zwischen weit auseinanderliegenden Token nur schwer darstellen, da diese Informationen über lange Sequenzen hinweg immer weiter verloren gingen. Obwohl die Transformer-Architektur aktuell einen fundamentalen Fortschritt in der Leistungsfähigkeit moderner LLMs markiert, sollte erwähnt werden, dass weitere Ansätze zur Verarbeitung natürlicher Sprache existieren. 
+\subsubsection{Fähigkeiten und Limitierungen}
 
-Der wesentliche Erfolgsfaktor der Transformer-Architektur bildet der Attention Mechanismus. Dieser erlaubt eine parallele Verarbeitung von Texteingaben, bei der Abhängigkeiten zwischen allen Wörtern berücksichtigt werden. Beispielsweise kann das Wort "Bank" abhängig von dem Kontext in dem es verwendet wird, entweder eine Sitzgelegenheit oder Geldbank darstellen. Durch den Attention-Mechanismus kann das Modell lernen, wie sich die Bedeutung eines Wortes in Abhängigkeit zu dem Kontext verändert. Dadurch sind LLMs, die auf der Transformer-Architektur basieren, in der Lage, Kontextinformationen und semantische Beziehungen auch über längere Textsequenzen hinweg zu berücksichtigen.
+LLMs weisen in diesem Zusammenhang unterschiedliche Fähigkeiten auf, wie das Generieren von zusammenhängenden Texten, das logische Schlussfolgern oder die Verarbeitung von Kontext über längere Textsequenzen hinweg. Darüber hinaus werden in der Literatur oftmals emergente Fähigkeiten beschrieben, die das Modell unbeabsichtigt erlernt, ohne dass es gezielt darauf trainiert wurde.
+
+Es ist jedoch wichtig zu erwähnen, dass es sich bei LLMs um kein echtes Verständnis von Menschlicher Sprache oder Wissen handelt, sondern lediglich um probabilistische Vorhersagen, welches Token am wahrscheinlichsten zu einer gegebenen Sequenz an Token passt. Dadurch ist das Ergebnis grundsätzlich davon Abhängig, wie das LLM die interne Struktur an statistische Muster in den Trainingsdaten angepasst hat.
+
+Aus diesem Grund kann es vorkommen, dass inhaltlich falsche oder frei erfundene Informationen erzeugt werden. Dieses Phänomen wird als Halluzination bezeichnet und stellt eine Grundlegende Herausforderung von LLMs dar. Halluzinationen entstehen insbesondere dann, wenn dem Modell relevante Kontextinformationen fehlen oder statistische Muster aus den Trainingsdaten zu fehlerhaften Schlussfolgerungen führen.
 
 \subsubsection{Prompting und Kontextverarbeitung}
+
 Wie das vorherige Kapitel bereits erläutert hat spielt der Kontext in LLMs eine wichtige Rolle. Dieser Kontext wird ihnen über sogenannte Prompts übermittelt. Der Begriff Prompt bedeutet „Aufforderung“ oder „Eingabe“ und beschreibt die textuelle Anweisung, die einem LLM übergeben wird, um eine bestimmte Ausgabe zu erzeugen. Prompts können dabei sowohl einfache Fragen als auch komplexe Anweisungen, Rollenbeschreibungen oder zusätzliche Kontextinformationen enthalten. Die Qualität und Struktur eines Prompts hat einen erheblichen Einfluss auf die Qualität der generierten Antworten.
 
 Im Kontext moderner LLMs wird häufig zwischen verschiedenen Arten von Prompts unterschieden. System-Prompts definieren grundlegende Verhaltensregeln oder Rollen des Modells, beispielsweise die Rolle eines Kundenservice-Chatbots. User-Prompts hingegen enthalten die eigentliche Eingabe des Nutzers. Darüber hinaus können zusätzliche Kontextinformationen bereitgestellt werden, etwa Dokumente, Gesprächsverläufe oder nutzerspezifische Informationen.
@@ -34,6 +36,12 @@ Die gezielte Gestaltung solcher Eingaben wird als Prompt Engineering bezeichnet.
 Eine zentrale Herausforderung bei der Kontextverarbeitung von LLMs stellt das sogenannte Kontextfenster dar. Dieses beschreibt die maximale Anzahl an Tokens, die ein Modell gleichzeitig verarbeiten kann. Sämtliche Informationen innerhalb dieses Fensters können vom Modell bei der Generierung einer Antwort berücksichtigt werden. Wird die maximale Größe überschritten, gehen ältere Informationen verloren oder müssen entfernt werden.
 
 Die Größe des Kontextfensters ist insbesondere für dialogbasierte Systeme relevant, da längere Konversationen dazu führen können, dass frühere Informationen nicht mehr berücksichtigt werden können. Dies stellt vor allem für personalisierte Chatbots eine Herausforderung dar, da Nutzerpräferenzen und frühere Interaktionen häufig über längere Zeiträume hinweg relevant bleiben.
+
+\subsubsection{Nutzung über APIs}
+
+In der Softwareentwicklung werden LLMs überwiegend nicht lokal betrieben sondern über Application Programming Interfaces (APIs) von externen Anbietern eingebunden. Bekannte Unternehmen, wie Anthropic, OpenAi, Google oder Meta, bieten heute Modelle mit unterschiedlichen Größen an, wodurch sie ohne großen Aufwand integriert werden können. Dieser Umstand eröffnet Unternehmen zahlreiche Möglichkeiten LLMs effizient im Betrieb einzusetzen.
+
+Die Nutzung über APIs
 
 
 \subsection{Chatbots im Unternehmenskontext}
@@ -61,7 +69,7 @@ Der Prozess beginnt mit der Problem Identifikation und Motivation. Hier sollte d
 
 Der nächste Schritt ist es das Artefakt zu erstellen und zu entwickeln. In dieser Phase werden wichtige Design Entscheidungen für das Artefakt getroffen.
 
-Sobald das Artifakt erstellt wurde, muss demonstriert werden, dass es das Problem tatsächlich lösen kann. Es ist also ein Prove of Concept notwendig.
+Sobald das Artefakt erstellt wurde, muss demonstriert werden, dass es das Problem tatsächlich lösen kann. Es ist also ein Prove of Concept notwendig.
 
 Im letzten Schritt wird die Lösung vor dem Hintergrund des Problemraums und der Zielsetzung evaluiert. Hierzu werden wissenschaftliche Methoden verwendet um die Validität der Lösung empirisch bewerten zu können. Sollte die Evaluation ergeben, dass das Artefakt das Problem und die Ziele nicht lösen kann, ist es notwendig zurück in die Design Phase zu wechseln und den Prozess erneut zu iterieren.
 
