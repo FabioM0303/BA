@@ -48,9 +48,22 @@ Die Nutzung über APIs
 \subsubsection{Definition und Hintergrund von Chatbots}
 
 \subsubsection{Retrieval Augmented Generation}
+
+LLMs haben die Einschränkung, dass ihre Informationen auf den Trainingsdaten basieren. Daher können sie aktuelles wissen oder Domänenspezifisches wissen in der Antwortgenerierung nicht gezielt einbinden und neigen daher zur Halluzination. Retrieval Augmented Generation (RAG) ist ein Framework, welches es dem Anwender ermöglicht LLMs mit externen Wissensbasen zu erweitern. Dabei werden zur Laufzeit der Prompt Erstellung zusätzliche Daten aus Datenbanken abgefragt und dem Kontext angehangen. RAG hilft dabei die Einschränkungen von LLMs zu überwinden und die Antwortgenerierung zu optimieren.
+
+Ein typischer Aufbau einer RAG Infrastruktur kann der Abbildung \ref{} entnommen werden. 
+
 Unter dem Begriff Vektordatenbanken versteht man ein Datenbanksystem, welches die effiziente Speicherung, Indexierung und Suche hochdimensionaler Vektoren unterstützt. Üblicherweise repräsentieren diese Vektoren die semantische Bedeutung bestimmter Inhalte wie beispielsweise Text, Bild oder Audio. Dabei werden mithilfe von Embedding Modellen aus Inhalten, die in ähnlichen Kontexten auftreten, ähnliche Vektorrepräsentationen erzeugt. Die Ähnlichkeit der Vektoren wird dabei durch Metriken wie der euklidischen Distanz oder dem Skalarprodukt gemessen. Im Gegensatz zu klassischen relationalen Datenbanken ermöglichen Vektordatenbanken die semantische Suche nach inhaltlich ähnlichen Inhalten. Diese Suche basiert meist auf approximativen Verfahren zur Bestimmung der nächsten Nachbarn eines Query-Vektors, wodurch selbst in großen Datenmengen eine effiziente Suche gewährleistet werden kann. 
 
-
+\begin{figure}[hbt]
+	\centering
+	\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+		\source{Quelle: \cite{Gao2023RetrievalAugmentedGF}}
+		\caption{Retrieval Augmented Generation Prozess} % Überschrift
+		\includegraphics[width=1\textwidth]{img/RAG.png}\\ % Pfad
+		\label{fig: RAG}
+	\end{minipage}
+\end{figure}
 
 %\subsection{Personalisierung}
 
