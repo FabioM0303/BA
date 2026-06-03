@@ -51,19 +51,25 @@ Die Nutzung über APIs
 
 LLMs haben die Einschränkung, dass ihre Informationen auf den Trainingsdaten basieren. Daher können sie aktuelles wissen oder Domänenspezifisches wissen in der Antwortgenerierung nicht gezielt einbinden und neigen daher zur Halluzination. Retrieval Augmented Generation (RAG) ist ein Framework, welches es dem Anwender ermöglicht LLMs mit externen Wissensbasen zu erweitern. Dabei werden zur Laufzeit der Prompt Erstellung zusätzliche Daten aus Datenbanken abgefragt und dem Kontext angehangen. RAG hilft dabei die Einschränkungen von LLMs zu überwinden und die Antwortgenerierung zu optimieren.
 
-Ein typischer Aufbau einer RAG Infrastruktur kann der Abbildung \ref{} entnommen werden. 
+Ein typischer RAG Prozess kann der Abbildung \ref{fig:RAG} entnommen werden. Der Prozess startet mit dem Nutzer, der einen Prompt formuliert. Im Anschluss wird mithilfe des Prompts eine Query vorbereitet. Ein wichtiger Zwischenschritt in dem Prozess ist das Indexing. Beim Indexing werden Inhalte in sogenannte Chunks eingeteilt. Aus den Chunks werden mithilfe von Embedding Modellen Vektorrepräsentationen erzeugt. Das Embedding Modell sorgt dafür, dass aus semantisch ähnlichen Inhalten, ähnliche Vektorrepräsentationen erzeugt werden. Die Ähnlichkeit wird durch Metriken wie der euklidischen Distanz oder dem Skalarprodukt gemessen. Diese Vektoren werden Anschließend in Vektordatenbanken gespeichert.
 
-Unter dem Begriff Vektordatenbanken versteht man ein Datenbanksystem, welches die effiziente Speicherung, Indexierung und Suche hochdimensionaler Vektoren unterstützt. Üblicherweise repräsentieren diese Vektoren die semantische Bedeutung bestimmter Inhalte wie beispielsweise Text, Bild oder Audio. Dabei werden mithilfe von Embedding Modellen aus Inhalten, die in ähnlichen Kontexten auftreten, ähnliche Vektorrepräsentationen erzeugt. Die Ähnlichkeit der Vektoren wird dabei durch Metriken wie der euklidischen Distanz oder dem Skalarprodukt gemessen. Im Gegensatz zu klassischen relationalen Datenbanken ermöglichen Vektordatenbanken die semantische Suche nach inhaltlich ähnlichen Inhalten. Diese Suche basiert meist auf approximativen Verfahren zur Bestimmung der nächsten Nachbarn eines Query-Vektors, wodurch selbst in großen Datenmengen eine effiziente Suche gewährleistet werden kann. 
+Unter dem Begriff Vektordatenbank versteht man ein Datenbanksystem, welches die effiziente Speicherung, Indexierung und semantische Suche hochdimensionaler Vektoren unterstützt. Im Gegensatz zu klassischen relationalen Datenbanken sind Vektordatenbanken darauf spezialisiert semantische Suchverfahren nach inhaltlich ähnlichen Inhalten bereitzustellen. Die Suche basiert meist auf approximativen Verfahren zur Bestimmung der nächsten Nachbarn eines Query-Vektors, wodurch selbst in großen Datenmengen eine effiziente Suche gewährleistet werden kann. 
+
+Bevor der Prompt dem LLM zur Antwortgenerierung übergeben wird, wird die query geindext und es wird in der Datenbank nach ähnlichen Chunks gesucht, die für den Kontext relevant sein könnten. Diese werden anschließend mit dem Prompt kombiniert und zusammen an das LLM übertragen. Dieser Prozess führt dazu, dass Fragen besser verarbeitet werden und zusätzliche Informationen bereitgestellt werden.
 
 \begin{figure}[hbt]
 	\centering
 	\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
-		\source{Quelle: \cite{Gao2023RetrievalAugmentedGF}}
-		\caption{Retrieval Augmented Generation Prozess} % Überschrift
+		\caption{Typischer RAG Prozess} % Überschrift
 		\includegraphics[width=1\textwidth]{img/RAG.png}\\ % Pfad
-		\label{fig: RAG}
+		\source{\cite{Gao2023RetrievalAugmentedGF}}
+		\label{fig:RAG}
 	\end{minipage}
 \end{figure}
+
+
+
+
 
 %\subsection{Personalisierung}
 

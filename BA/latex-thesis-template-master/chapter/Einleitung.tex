@@ -6,21 +6,27 @@
 
 Der Einsatz von Chatbots in Unternehmen hat in den vergangenen Jahren deutlich an Bedeutung gewonnen. Insbesondere durch die Fortschritte im Bereich leistungsfähiger Large Language Models (LLMs) haben sich Chatbots zu einem zentralen Bestandteil der digitalen Unternehmensinfrastruktur entwickelt. Sie können sowohl Kunden als auch Mitarbeitende in unterschiedlichen Anwendungsszenarien unterstützen, indem sie Informationen bereitstellen, Prozesse automatisieren oder Handlungsempfehlungen ableiten.
 
-Auch das Unternehmen Phoenix Contact hat im Zuge dieser Entwicklungen einen Enterprise-Chatbot in den operativen Betrieb integriert. Dieser ist bereits in der Lage, Nutzeranfragen strukturiert zu verarbeiten und dabei Informationen aus internen Wissensbasen zu berücksichtigen. Trotz dieser Funktionalitäten zeigt sich in der Praxis, dass die Antworten des Chatbots überwiegend standardisiert erfolgen. Individuelle Nutzerpräferenzen werden dabei nicht sitzungsübergreifend oder über längere Konversationen hinweg von dem Chatbot beachtet.
-
-%Ein wesentlicher Grund hierfür liegt darin, dass vergangene Interaktionen nicht nachhaltig verarbeitet werden. Präferenzen und Anforderungen, die Nutzer in früheren Gesprächen äußern, werden weder systematisch extrahiert noch langfristig gespeichert oder bei späteren Konversationen berücksichtigt. Dadurch wird jede Sitzung isoliert betrachtet, sodass kein langfristiges Verständnis des jeweiligen Nutzers aufgebaut werden kann.
+Auch das Unternehmen Phoenix Contact hat im Zuge dieser Entwicklungen einen Enterprise-Chatbot in den operativen Betrieb integriert. Dieser ist bereits in der Lage, Nutzeranfragen strukturiert zu verarbeiten und dabei Informationen aus internen Wissensbasen zu berücksichtigen. Trotz dieser Funktionalitäten zeigt sich in der Praxis, dass die Antworten des Chatbots überwiegend standardisiert erfolgen. Individuelle Präferenzen, die der Nutzer innerhalb von Konversationen äußert, werden dabei nicht sitzungsübergreifend von dem Chatbot beachtet.
 
 Dieses Problem führt dazu, dass die Erwartungen an die Leistungsfähigkeit des Systems nicht vollständig erfüllt werden können. Gerade aus der Sicht des Kunden kann ein ineffizientes Chatbot-System negative Einflüsse auf die Geschäftsbeziehung oder die Wahrnehmung des Unternehmens haben. Gleichzeitig beeinträchtigt es die interne Produktivität der Mitarbeiter, da Präferenzen redundant geäußert werden müssen, wodurch der Aufwand in einzelnen Konversationen steigt.
 
 Vor diesem Hintergrund wird deutlich, dass die langfristige Berücksichtigung von Nutzerpräferenzen sowohl aus Kunden- als auch aus Mitarbeiterperspektive von zentraler Bedeutung ist. Um dies zu gewährleisten, müssen geeignete Mechanismen entwickelt werden, die Nutzerpräferenzen automatisiert erfassen, strukturiert speichern und in zukünftige Interaktionen integrieren können.
 
+\subsection{Vorstellung des Praxisunternehmens}
+
+Phoenix Contact ist ein global tätiges Familienunternehmen, das sich mit dem strategischen Ziel zur Umsetzung der „All Electric Society“ in der Elektroindustrie positioniert. Die Produkte von Phoenix Contact bieten unterschiedliche Lösungen für die Bereiche Automatisierung, Vernetzung und Elektrifizierung. Diese Arbeit wurde in der Abteilung "Data Science \& Engineering" (DSE) verfasst, die ein Teil der Muttergesellschaft Phoenix Contact GmbH \& Co.KG ist.
+
+Die Abteilung DSE setzt sich unter anderem für Lösungen im Bereich der Generativen Künstlichen Intelligenz ein. Diese Lösungen werden ausschließlich von Phoenix Contact selbst eingesetzt und verfolgen die Absicht verschiedenste Prozesse mithilfe Intelligenter Assistenten zu unterstützen. In diesem Rahmen sind in der Vergangenheit beispielsweise Projekte wie ein Enterprise-Chatbot, ein Coding Assitent und ein Techbot entstanden.
+
+Der Enterprise Chatbot namens "Phoenix Contact Intelligent Assistant" (PIA) spielt für diese Arbeit eine Zentrale Rolle. Es handelt sich dabei um einen Chatbot, der mit Unternehmensdaten erweitert wurde und dadurch präzisere Antworten über Phoenix Contact bereitstellen kann. Da sich die Umwelt im Bereich der künstlichen Intelligenz stetig weiterentwickelt, neue KI Modelle veröffentlicht werden und die Erwartungen der Nutzer zunehmend steigen, ist es auch Zukünftig wichtig, dass vorhandene Projekte wie der Enterprise Chatbot von der Abteilung evaluiert und weiterentwickelt werden.
+
+
 \subsection{Zielsetzung}
 
-Daher befasst sich diese Arbeit mit der Personalisierung von Chatbots im Unternehmenskontext. Ziel der Arbeit ist die Entwicklung eines Konzepts, das Nutzerpräferenzen und relevante Kontexte aus vergangenen Konversationen berücksichtigen kann, um die Personalisierung zukünftiger Interaktionen zu verbessern. Der Fokus liegt dabei insbesondere auf einem Retrieval-Augmented-Generation Ansatz, der im Rahmen dieser Arbeit untersucht und konzeptionell ausgearbeitet werden soll. Die Zentrale Forschungsfrage dieser Untersuchung lautet:
+Daher befasst sich diese Arbeit mit der Personalisierung von Chatbots im Unternehmenskontext. Ziel der Arbeit ist die Entwicklung und Evaluierung eines Konzepts, das Nutzerpräferenzen und relevante Kontexte aus vergangenen Konversationen berücksichtigen kann, um die Personalisierung zukünftiger Interaktionen zu verbessern. Der Fokus liegt dabei insbesondere auf Speicher Strukturen, wie .... . 
 
-\subsection{Abgrenzung}
+Die Zentrale Forschungsfrage dieser Untersuchung lautet:
 
-Ziel dieser Arbeit ist es nicht einen vollständig Personalisierten Chatbot zu entwickeln, der implizites Verhalten der Nutzer analysiert und daraus Präferenzen ableitet. Diese Ausarbeitung fokussiert sich lediglich auf Explizite Aussagen, die innerhalb von Konversationen von Nutzern getätigt wurden.
 
 \subsection{Vorgehensweise}
 
