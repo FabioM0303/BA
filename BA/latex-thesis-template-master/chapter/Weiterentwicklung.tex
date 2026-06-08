@@ -1,16 +1,45 @@
 
 
-\subsubsection{Schwächenanalyse}
 
-Der derzeitige technische Stand des betrachteten Chatbots offenbart im Hinblick auf die identifizierte Problemstellung eine grundlegende strukturelle Schwäche. Eingehende Nutzeranfragen werden aktuell isoliert und sequenziell verarbeitet, ohne dabei Informationen aus vorherigen Interaktionen zu berücksichtigen.
 
-Zwar werden Konversationsdaten bereits zu Zwecken der Observability in einer Datenbank persistiert, jedoch erfolgt keine weiterführende Nutzung dieser Daten im Sinne einer semantischen Wiederverwendung. Insbesondere fehlt ein Mechanismus zur gezielten Erschließung und Integration historischer Konversationsinhalte in zukünftige Interaktionen.
+\label{Kapitel3}
+\section{Identifikation des Problemraums}
+\subsection{Ist-Analyse}
+Aus der zugrunde liegenden Problemstellung dieser Arbeit geht hervor, dass der betrachtete Chatbot bislang keine Funktionen zur Personalisierung von Nutzeranfragen bereitstellt. Dies führt zu zwei zentralen Einschränkungen des Systems:
 
-Folglich existiert kein vorgelagerter Prozess, der vor der eigentlichen Anfrageverarbeitung relevante Informationen—wie etwa Nutzerpräferenzen oder kontextspezifische Hinweise—aus der Datenbasis extrahiert und in die Eingabestruktur (Prompt) des Sprachmodells integriert. Diese fehlende Kontextanreicherung führt dazu, dass der Chatbot wiederholt Rückfragen stellen muss oder generische Antworten liefert, obwohl relevante Informationen aus vorangegangenen Interaktionen prinzipiell verfügbar wären.
+\begin{itemize}
+	\item Die Unfähigkeit, vergangene Konversationen bei der Verarbeitung aktueller Anfragen zu berücksichtigen
+	\item Die fehlende Erfassung sowie Nutzung individueller Nutzerpräferenzen
+\end{itemize}
 
-Zusammenfassend lässt sich festhalten, dass die zentrale Schwäche des Systems nicht in der Datenerfassung, sondern in der fehlenden semantischen Erschließung und Nutzung dieser Daten liegt.
+Für die Entwicklung eines geeigneten Artefakts ist ein vertieftes Verständnis des Problemraums wichtig, damit technische Schwachstellen und Defizite behoben werden können. Daher ist es Sinnvoll den aktuellen Stand des behandelten Chatbots näher zu untersuchen und zu analysieren. Zur Veranschaulichung dient die Abbildung \ref{arch}.
 
-\subsubsection{Rahmenbedingungen}
+Insgesamt unterteilt sich die Architektur in eine Präsentations- und Orchestrierungsschicht. Die Präsentationsschicht basiert hauptsächlich auf einem React Frontend, worüber Authentifizierte Nutzer die Möglichkeit haben eigene Chats zu starten und Anfragen zu formulieren.
+
+Die Kommunikation zwischen Frontend und Orchestrierungsschicht erfolgt über FastAPI-Schnittstellen. Sobald der Nutzer einen Prompt abschickt, wird innerhalb der Orchestrierungsschicht eine Advanced RAG Pipeline ausgelöst. Der erste Schritt ist eine Routing Funktion, die bestimmt, ob eine Anfrage direkt durch das LLM beantwortet oder zusätzlich internes Wissen benötigt wird. Falls keine interne Wissensbasis erforderlich ist, wird die Anfrage Direkt von einem GPT-4o Modell von OpenAI verarbeitet. 
+
+Wird hingegen internes Wissen benötigt, kombiniert die Architektur Pre-Retrieval, Retrieval und Post-Retrieval Schritte (vgl. Kapitel \ref{retr}), um eine optimierte Suche nach Relevanten Inhalten zu gewährleisten. Darüber hinaus werden zusätzliche Schritte wie Language Identification und Query-Translation verwendet, um eine Mehrsprachige Suche in Deutsch und Englisch zu unterstützen.
+
+Der eigentliche Retrieval Prozess basiert auf einem hybriden Suchansatz. Hierbei werden klassische schlüsselwortbasierte Suchverfahren mit semantischer Vektorsuche kombiniert. Die Suche wird über Azure AI Search realisiert und anschließend durch ein Reranking ergänzt, um besonders relevante Dokumente höher zu priorisieren. Die Ergebnisse verschiedener Suchprozesse werden danach zusammengeführt und anhand eines Similarity Thresholds gefiltert, sodass nur ausreichend relevante Inhalte berücksichtigt werden.
+
+Im Anschluss erfolgt das sogenannte Context Filling, bei dem die gefundenen Dokumente in den Kontext der Anfrage integriert werden. Auf Basis dieses erweiterten Kontextes wird schließlich mithilfe des GPT-4o Modells von OpenAI eine Antwort generiert und an das Frontend zurückgegeben.
+
+Neben der eigentlichen Anfrageverarbeitung beinhaltet die Architektur zusätzlich eine Observability-Schicht. Diese dient der Überwachung und Analyse des Systems. Hierfür kommen unter anderem Langfuse zur Nachverfolgung von Prompts und Modellantworten, Azure Blob Storage zur Datenspeicherung, Snowflake zur Analyse strukturierter Daten sowie Tempo und Grafana zur Visualisierung und Überwachung von Systemmetriken zum Einsatz.
+
+Die Analyse zeigt, dass die bestehende Architektur eine klar strukturierte Trennung zwischen Präsentations- und Orchestrierungsschicht aufweist und durch den Einsatz einer Advanced-RAG-Pipeline eine differenzierte Verarbeitung von Nutzeranfragen ermöglicht. Dabei werden sowohl direkte Modellanfragen als auch erweiterte Retrieval-Prozesse unterstützt.
+
+
+\begin{figure}[hbt]
+	\centering
+	\begin{minipage}[t]{1\textwidth} % Breite, z.B. 1\textwidth		
+		\caption{PIA Architektur} % Überschrift
+		\includegraphics[width=1\textwidth]{img/arch.png}\\ % Pfad
+		\label{arch}
+	\end{minipage}
+\end{figure}
+
+
+\subsection{Rahmenbedingungen}
 
 Die Entwicklung des Artefakts erfolgt unter Berücksichtigung technischer und organisatorischer Rahmenbedingungen, die maßgeblichen Einfluss auf die Gestaltung der Lösung haben.
 
@@ -20,7 +49,7 @@ Zum anderen ist eine enge Anbindung an die bestehende Systemarchitektur erforder
 
 Darüber hinaus muss die Lösung mit den vorhandenen Datenstrukturen kompatibel sein und bestehende Persistenzmechanismen sinnvoll erweitern, ohne deren Stabilität oder Performance negativ zu beeinflussen.
 
-\subsubsection{Ziele}
+\subsection{Ziele}
 
 Basierend auf der zuvor durchgeführten Analyse des Problemraums lassen sich folgende zentrale Zielsetzungen für das zu entwickelnde Artefakt ableiten:
 
@@ -34,3 +63,12 @@ Basierend auf der zuvor durchgeführten Analyse des Problemraums lassen sich fol
 \end{itemize}
 
 Ziel des Artefakts ist es somit, die bestehende statische und kontextunabhängige Verarbeitung von Nutzeranfragen durch eine dynamische, kontextbasierte und personalisierte Interaktion zu erweitern.
+
+
+
+
+
+
+
+
+

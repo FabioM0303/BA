@@ -5,51 +5,97 @@
 
 \subsubsection{Definition und Hintergrund}
 
-Large Language Models (LLMs) haben sich in den Letzten Jahren zu einem bedeutenden Forschungsbereich der generativen künstlichen Intelligenz und des Natural Language Processings entwickelt. Der Begriff Large Language Modell bedeutet übersetzt so viel wie großes Sprachmodell und beschreibt allgemein ein System, dass in der Lage ist natürliche Sprache zu verarbeiten und zu generieren.
+Large Language Models (LLMs) bilden einen zentralen Fortschritt für die Bereiche der generativen künstlichen Intelligenz und des Natural Language Processings (NLP). Der Begriff Large Language Modell bedeutet übersetzt so viel wie großes Sprachmodell und beschreibt allgemein ein System, dass auf großen Mengen textueller Daten trainiert wird, um natürliche Sprache verarbeiten und generieren zu können. 
 
-Das heutige Verständnis von LLMs ist dabei eng mit der sogenannten Transformer-Architektur verbunden, die 2017 durch Vaswani et al. in der Arbeit Attention Is All You Need vorgestellt wurde und den Bereich des NLP revolutioniert hat. Der Hintergrund dieser Arbeit war es die Limitationen von rekurrenten neuronalen Netzen zu Adressieren. Aufgrund einer Sequenziellen Verarbeitung von Textsequenzen, konnten sie Abhängigkeiten zwischen weit auseinanderliegenden Wörtern nur eingeschränkt berücksichtigen, da Informationen über lange Sequenzen immer weiter verloren gingen.
+Das heutige Verständnis von LLMs ist dabei eng mit der sogenannten Transformer-Architektur verbunden, die 2017 durch Vaswani et al. in der Arbeit Attention Is All You Need vorgestellt wurde und den Bereich des NLP revolutioniert hat. Dabei handelt es sich um eine Spezielle Art des Neuronalen Netzes, welches im Gegensatz zu vorherigen Ansätzen den Fokus vollständig auf Self-Attention Mechanismen setzt (vgl. \cite{Attention_is_all_you_need}). Self-Attention erlaubt es dem Modell die Beziehung von einem Wort zu jedem anderen Wort im Kontext parallel zu erfassen, wodurch es lernt welche Wörter für das Verständnis eines bestimmten Wortes am relevantesten sind (vgl. \cite{Evolution_im_Dialog} S. 365 \& \cite{A_Survey_of_llms_techniques_apps_and_challenges} S. 7). Dadurch können Kontextinformationen und semantische Beziehungen auch über längere Textsequenzen hinweg berücksichtigt werden, ohne dass diese verloren gehen. 
 
-Vaswani et al. stellen in ihrer Arbeit mit dem sogenannten Self-Attention-Mechanismus eine Lösung für dieses Problem vor. Self Attention erlaubt es dem Modell die Beziehung von einem Wort zu jedem anderen Wort im Kontext parallel zu erfassen, wodurch es lernt welche Wörter für das Verständnis eines bestimmten Wortes besonders wichtig sind. Dadurch können Kontextinformationen und semantische Beziehungen auch über längere Textsequenzen hinweg berücksichtigt werden, ohne dass diese verloren gehen.
+Der Hintergrund dieser Arbeit war es die Limitationen von State Of The Art Ansätzen in der Sequenz- und Sprachmodellierung zu adressieren. Ursprünglich wurde die Transformer-Architektur für maschinelle Übersetzung und einfache Sprachmodellierungs Aufgaben verwendet (vgl. \cite{Attention_is_all_you_need}). Erst spätere Forschungsarbeiten zu den Scaling Laws zeigten, dass eine Skalierung der Modellparameter, der Trainingsdaten Größe und der verfügbaren Rechenleistung zu einer verbesserten Leistungsfähigkeit führt (vgl. \cite{kaplan_scaling_2020} \& \cite{chen2026surveyscalinglargelanguage}). Darüber hinaus werden in der Literatur oftmals emergente Fähigkeiten beschrieben, die das Modell unbeabsichtigt durch steigende Skalierung entwickelt (vgl. \cite{xiao2025foundationslargelanguagemodels} S. 64 \& \cite{Evolution_im_Dialog} S. 366).
+
 
 \subsubsection{Funktionsweise}
 
-Neuronale Netze bilden die technische Grundlage von LLMs und sind an der Funktionsweise biologischer Gehirne angelehnt. Sie bestehen aus einer großen Anzahl künstlicher Neuronen, die über sogenannte Gewichte miteinander verbunden sind und in mehreren Schichten organisiert werden. Während des Trainings werden diese Gewichte kontinuierlich angepasst, sodass das Modell relevante Muster in den Daten erlernen kann. Auf dieser Grundlage wird die interne Struktur des Netzwerks iterativ optimiert, um möglichst präzise Vorhersagen treffen zu können. Aufgrund dieser Eigenschaften eignen sich neuronale Netze insbesondere für komplexe Klassifikations- und Vorhersageaufgaben.
+Da die vollständige technische Funktionsweise von Large Language Models (LLMs) für das Verständnis dieser Arbeit nicht erforderlich ist, wird in diesem Abschnitt bewusst auf eine detaillierte Betrachtung verzichtet. Da LLMs jedoch die Grundlage des in dieser Arbeit entwickelten Konzepts bilden, ist ein grundlegendes Verständnis ihrer Funktionsweise notwendig.
 
-Die Grundlegende Funktionsweise eines LLMs besteht somit darin, ein Neuronales Netz anhand einer Sequenz von sogenannten Token die nachfolgenden Token der Sequenz vorhersagen zu lassen. Token können in diesem Zusammenhang ganze Wörter, Wortteile oder Zeichen darstellen. Das Ergebnis des Prozesses ist dabei vollständig davon abhängig, wie das Neuronale Netz seine Gewichte innerhalb des Training angepasst hat.
+Die Funktionsweise eines auf der Transformer-Architektur basierenden LLMs lässt sich vereinfacht anhand der folgenden zentralen Konzepte beschreiben:
+
+\begin{itemize}
+	\item \textbf{Tokenisierung}: Vor der Verarbeitung wird der Eingabetext in kleinere Einheiten, sogenannte Token, zerlegt. Diese können Wörter, Wortbestandteile oder Satzzeichen umfassen.
+	
+	\item \textbf{Embedding}: Die Token werden in numerische Vektoren umgewandelt, sodass ihre semantischen Eigenschaften für das Modell mathematisch verarbeitet werden können.
+	
+	\item \textbf{Pre-Training}: Während des Pre-Trainings erlernt das Modell grundlegendes sprachliches und inhaltliches Wissen. Hierfür nutzen State-of-the-Art-Modelle überwiegend selbstüberwachtes Lernen, wodurch das Modell automatisch aus ungelabelten Datensätzen lernt. Diese Datensätze können Billionen von Token beinhalten (vgl. \cite{xiao2025foundationslargelanguagemodels} S. 2-3 \% S. 45).
+	
+	\item \textbf{Fine-Tuning}: Nach dem Pre-Training wird das Modell mithilfe zusätzlicher Trainingsdaten an spezifische Aufgaben angepasst. Das Fine-Tuning baut dabei auf den im Pre-Training erlernten Fähigkeiten auf und erfolgt typischerweise mit kleineren, aufgabenspezifischen Datensätzen (vgl. \cite{A_Survey_of_llms_techniques_apps_and_challenges} S. 9 \& \cite{xiao2025foundationslargelanguagemodels} S. 45).
+	
+	\item \textbf{Transformer-Architektur}: Die grundlegende Modellarchitektur moderner LLMs, die durch den Attention-Mechanismus eine effiziente Verarbeitung langer Textsequenzen ermöglicht.
+	
+	\item \textbf{Inferenz}: Während der Nutzung verarbeitet das Modell die Eingabe und erzeugt schrittweise neue Token, indem es für jedes mögliche Folgetoken Wahrscheinlichkeiten berechnet und daraus eine Auswahl trifft.
+\end{itemize}
+
+Auf Basis dieser Mechanismen verarbeitet das Modell Eingabesequenzen, indem es die einzelnen Token unter Berücksichtigung ihres jeweiligen Kontextes analysiert. Mithilfe der während des Trainings erlernten sprachlichen Muster und Zusammenhänge berechnet das Modell Wahrscheinlichkeiten für mögliche Folgetoken. Anschließend wird ein geeignetes Token ausgewählt und an die bestehende Sequenz angefügt.
+
+Dieser Vorgang wiederholt sich iterativ, bis die gewünschte Ausgabe vollständig generiert wurde. Die Qualität der erzeugten Antwort hängt dabei maßgeblich von den während des Trainings erlernten Zusammenhängen sowie von den im Prompt bereitgestellten Kontextinformationen ab.
 
 \subsubsection{Fähigkeiten und Limitierungen}
 
-LLMs weisen in diesem Zusammenhang unterschiedliche Fähigkeiten auf, wie das Generieren von zusammenhängenden Texten, das logische Schlussfolgern oder die Verarbeitung von Kontext über längere Textsequenzen hinweg. Darüber hinaus werden in der Literatur oftmals emergente Fähigkeiten beschrieben, die das Modell unbeabsichtigt erlernt, ohne dass es gezielt darauf trainiert wurde.
+LLMs weisen unterschiedliche Fähigkeiten auf, die sie für eine Vielzahl von Anwendungen nutzbar machen. Zu den wichtigsten Fähigkeiten gehört das sogenannte In-Context Learning. Dabei können Modelle Aufgaben anhand von Anweisungen oder Beispielen innerhalb des Prompts bearbeiten, ohne dass eine zusätzliche Anpassung der Modellparameter erforderlich ist. Darüber hinaus sind LLMs in der Lage, zusammenhängende Texte zu generieren, Inhalte zusammenzufassen, Fragen zu beantworten sowie Texte zwischen verschiedenen Sprachen zu übersetzen.
 
-Es ist jedoch wichtig zu erwähnen, dass es sich bei LLMs um kein echtes Verständnis von Menschlicher Sprache oder Wissen handelt, sondern lediglich um probabilistische Vorhersagen, welches Token am wahrscheinlichsten zu einer gegebenen Sequenz an Token passt. Dadurch ist das Ergebnis grundsätzlich davon Abhängig, wie das LLM die interne Struktur an statistische Muster in den Trainingsdaten angepasst hat.
+Zudem können viele aktuelle LLMs strukturierte Ausgaben erzeugen. Dies ermöglicht die Ausgabe von Informationen in fest definierten Formaten wie JSON, XML oder Tabellenstrukturen und erleichtert dadurch die Integration in Softwareanwendungen und automatisierte Verarbeitungsketten.
 
-Aus diesem Grund kann es vorkommen, dass inhaltlich falsche oder frei erfundene Informationen erzeugt werden. Dieses Phänomen wird als Halluzination bezeichnet und stellt eine Grundlegende Herausforderung von LLMs dar. Halluzinationen entstehen insbesondere dann, wenn dem Modell relevante Kontextinformationen fehlen oder statistische Muster aus den Trainingsdaten zu fehlerhaften Schlussfolgerungen führen.
+Trotz dieser Fähigkeiten weisen LLMs grundlegende Einschränkungen auf. Es ist wichtig zu betonen, dass LLMs kein tatsächliches Verständnis von Sprache oder Wissen besitzen. Stattdessen basieren ihre Antworten auf der probabilistischen Vorhersage des jeweils wahrscheinlichsten nächsten Tokens innerhalb einer gegebenen Sequenz. Die erzeugten Ergebnisse hängen somit maßgeblich von den statistischen Mustern ab, die während des Trainings erlernt wurden.
+
+Aus diesem Grund kann es vorkommen, dass LLMs inhaltlich falsche oder frei erfundene Informationen erzeugen. Dieses Phänomen wird als Halluzination bezeichnet und stellt eine zentrale Herausforderung beim Einsatz solcher Modelle dar. Dabei generiert das Modell Aussagen, die plausibel erscheinen, jedoch nicht den tatsächlichen Fakten entsprechen.
+
+Darüber hinaus sind die Antworten eines LLMs nicht vollständig deterministisch, sodass identische Anfragen zu unterschiedlichen Ergebnissen führen können. Aus diesen Gründen sollten die von LLMs erzeugten Inhalte insbesondere in Anwendungsbereichen mit hohen Anforderungen an Korrektheit und Zuverlässigkeit kritisch geprüft werden.
+
 
 \subsubsection{Prompting und Kontextverarbeitung}
 
-Wie das vorherige Kapitel bereits erläutert hat spielt der Kontext in LLMs eine wichtige Rolle. Dieser Kontext wird ihnen über sogenannte Prompts übermittelt. Der Begriff Prompt bedeutet „Aufforderung“ oder „Eingabe“ und beschreibt die textuelle Anweisung, die einem LLM übergeben wird, um eine bestimmte Ausgabe zu erzeugen. Prompts können dabei sowohl einfache Fragen als auch komplexe Anweisungen, Rollenbeschreibungen oder zusätzliche Kontextinformationen enthalten. Die Qualität und Struktur eines Prompts hat einen erheblichen Einfluss auf die Qualität der generierten Antworten.
+Die Interaktion mit einem LLM erfolgt über sogenannte Prompts. Der Begriff Prompt bedeutet „Aufforderung“ oder „Eingabe“ und beschreibt die Informationen, die einem Modell zur Generierung einer Antwort bereitgestellt werden. Prompts können sowohl einfache Fragen als auch komplexe Anweisungen, Rollenbeschreibungen oder zusätzliche Kontextinformationen enthalten. Die Qualität und Struktur eines Prompts haben dabei einen erheblichen Einfluss auf die Qualität der generierten Antworten.
 
-Im Kontext moderner LLMs wird häufig zwischen verschiedenen Arten von Prompts unterschieden. System-Prompts definieren grundlegende Verhaltensregeln oder Rollen des Modells, beispielsweise die Rolle eines Kundenservice-Chatbots. User-Prompts hingegen enthalten die eigentliche Eingabe des Nutzers. Darüber hinaus können zusätzliche Kontextinformationen bereitgestellt werden, etwa Dokumente, Gesprächsverläufe oder nutzerspezifische Informationen.
+Im Kontext moderner LLMs wird häufig zwischen verschiedenen Arten von Prompts unterschieden. System-Prompts definieren grundlegende Verhaltensregeln oder Rollen des Modells, beispielsweise die Rolle eines Kundenservice-Chatbots. User-Prompts enthalten die eigentliche Eingabe des Nutzers. Zusätzlich können weitere Informationen wie Dokumente, Gesprächsverläufe oder anwendungsspezifische Daten bereitgestellt werden.
 
-Die gezielte Gestaltung solcher Eingaben wird als Prompt Engineering bezeichnet. Ziel des Prompt Engineerings ist es, durch eine geeignete Formulierung der Eingaben die Qualität, Konsistenz und Relevanz der generierten Antworten zu verbessern. Insbesondere im Unternehmenskontext spielt Prompt Engineering eine wichtige Rolle, da dadurch das Verhalten eines Chatbots gezielt an bestimmte Anwendungsfälle angepasst werden kann.
+Die gezielte Gestaltung solcher Eingaben wird als Prompt Engineering bezeichnet. Ziel des Prompt Engineerings ist es, durch eine geeignete Formulierung und Strukturierung der Eingaben die Qualität, Konsistenz und Relevanz der generierten Antworten zu verbessern. Insbesondere im Unternehmenskontext spielt Prompt Engineering eine wichtige Rolle, da das Verhalten eines Chatbots gezielt an spezifische Anwendungsfälle angepasst werden kann.
 
-Eine zentrale Herausforderung bei der Kontextverarbeitung von LLMs stellt das sogenannte Kontextfenster dar. Dieses beschreibt die maximale Anzahl an Tokens, die ein Modell gleichzeitig verarbeiten kann. Sämtliche Informationen innerhalb dieses Fensters können vom Modell bei der Generierung einer Antwort berücksichtigt werden. Wird die maximale Größe überschritten, gehen ältere Informationen verloren oder müssen entfernt werden.
+Für die Verarbeitung von Prompts steht einem LLM nur ein begrenzter Kontext zur Verfügung. Dieser wird durch das sogenannte Kontextfenster beschrieben, das die maximale Anzahl an Tokens angibt, die ein Modell gleichzeitig verarbeiten kann. Alle Informationen innerhalb dieses Fensters können bei der Antwortgenerierung berücksichtigt werden. Wird die maximale Größe überschritten, müssen Teile des bisherigen Kontexts entfernt oder zusammengefasst werden.
 
-Die Größe des Kontextfensters ist insbesondere für dialogbasierte Systeme relevant, da längere Konversationen dazu führen können, dass frühere Informationen nicht mehr berücksichtigt werden können. Dies stellt vor allem für personalisierte Chatbots eine Herausforderung dar, da Nutzerpräferenzen und frühere Interaktionen häufig über längere Zeiträume hinweg relevant bleiben.
+Die Größe des Kontextfensters ist insbesondere für dialogbasierte Systeme relevant. Bei längeren Konversationen besteht die Gefahr, dass frühere Informationen nicht mehr berücksichtigt werden können. Dies stellt insbesondere für personalisierte Chatbots eine Herausforderung dar, da Nutzerpräferenzen und frühere Interaktionen häufig über einen längeren Zeitraum hinweg relevant bleiben.
 
 \subsubsection{Nutzung über APIs}
 
 In der Softwareentwicklung werden LLMs überwiegend nicht lokal betrieben sondern über Application Programming Interfaces (APIs) von externen Anbietern eingebunden. Bekannte Unternehmen, wie Anthropic, OpenAi, Google oder Meta, bieten heute Modelle mit unterschiedlichen Größen an, wodurch sie ohne großen Aufwand integriert werden können. Dieser Umstand eröffnet Unternehmen zahlreiche Möglichkeiten LLMs effizient im Betrieb einzusetzen.
 
-Die Nutzung über APIs
 
+\subsection{Personalisierung von Chatbots}
 
-\subsection{Chatbots im Unternehmenskontext}
-\subsubsection{Definition und Hintergrund von Chatbots}
+\subsubsection{Personalisierung und Nutzerpräferenzen}
 
-\subsubsection{Retrieval Augmented Generation}
+Unter Personalisierung von Chatbots versteht man die Anpassung von Dialogen und Antworten an individuelle Eigenschaften, Präferenzen oder Verhaltensweisen eines Nutzers. Ziel der Personalisierung ist es, die Relevanz, Konsistenz und Nutzerzufriedenheit innerhalb einer Interaktion zu erhöhen. Im Gegensatz zu generischen Chatbots, die allen Nutzern identische Antworten liefern, berücksichtigen personalisierte Systeme nutzerspezifische Informationen bei der Antwortgenerierung.
 
-LLMs haben die Einschränkung, dass ihre Informationen auf den Trainingsdaten basieren. Daher können sie aktuelles wissen oder Domänenspezifisches wissen in der Antwortgenerierung nicht gezielt einbinden und neigen daher zur Halluzination. Retrieval Augmented Generation (RAG) ist ein Framework, welches es dem Anwender ermöglicht LLMs mit externen Wissensbasen zu erweitern. Dabei werden zur Laufzeit der Prompt Erstellung zusätzliche Daten aus Datenbanken abgefragt und dem Kontext angehangen. RAG hilft dabei die Einschränkungen von LLMs zu überwinden und die Antwortgenerierung zu optimieren.
+Für die Personalisierung spielen Nutzerpräferenzen eine zentrale Rolle. Diese beschreiben individuelle Vorlieben, Interessen oder Anforderungen eines Nutzers und können auf unterschiedliche Weise erfasst werden. Grundsätzlich wird zwischen expliziten und impliziten Nutzerpräferenzen unterschieden.
+
+Explizite Nutzerpräferenzen werden direkt vom Nutzer angegeben. Beispiele hierfür sind bevorzugte Spracheinstellungen, Kommunikationsstile oder ausdrücklich genannte Interessen. Die Erfassung erfolgt meist durch Formulare, Einstellungen oder direkte Angaben innerhalb einer Konversation.
+
+Implizite Nutzerpräferenzen werden dagegen aus dem Verhalten eines Nutzers abgeleitet. Hierzu zählen beispielsweise häufig behandelte Themen, wiederkehrende Anfragen oder bestimmte Nutzungsmuster. Im Gegensatz zu expliziten Präferenzen müssen diese Informationen durch Analyse vergangener Interaktionen identifiziert werden.
+
+Die Berücksichtigung solcher Präferenzen ermöglicht es Chatbots, Antworten stärker auf die individuellen Bedürfnisse eines Nutzers auszurichten und langfristig konsistentere Interaktionen zu erzeugen.
+
+\subsubsection{Speichermechanismen}
+
+Damit Nutzerpräferenzen und frühere Interaktionen für zukünftige Konversationen verfügbar bleiben, benötigen personalisierte Chatbots geeignete Speichermechanismen. In der Literatur wird häufig zwischen Kurzzeit- und Langzeitgedächtnis sowie zwischen episodischem und semantischem Gedächtnis unterschieden.
+
+Das Kurzzeitgedächtnis (Short-Term Memory) umfasst Informationen, die lediglich während einer einzelnen Konversation verfügbar sind. In LLM-basierten Chatbots wird dieses Gedächtnis typischerweise durch das Kontextfenster realisiert. Sämtliche Nachrichten innerhalb des Kontextfensters können bei der Antwortgenerierung berücksichtigt werden. Nach Beendigung der Konversation oder bei Überschreitung der Kontextgrenze gehen diese Informationen jedoch verloren.
+
+Das Langzeitgedächtnis (Long-Term Memory) dient hingegen der dauerhaften Speicherung nutzerbezogener Informationen über mehrere Interaktionen hinweg. Die Informationen werden außerhalb des Modells gespeichert und können bei Bedarf erneut abgerufen werden. Dadurch können Präferenzen und Wissen auch über längere Zeiträume hinweg berücksichtigt werden.
+
+Innerhalb des Langzeitgedächtnisses wird häufig zwischen semantischem und episodischem Gedächtnis unterschieden. Das semantische Gedächtnis speichert allgemeines Wissen über einen Nutzer. Dazu gehören beispielsweise persönliche Präferenzen, Interessen oder dauerhaft gültige Eigenschaften. Die Informationen sind unabhängig vom Zeitpunkt ihrer Erfassung und beschreiben den Nutzer auf einer abstrakten Ebene.
+
+Das episodische Gedächtnis speichert dagegen konkrete Ereignisse oder Interaktionen aus vergangenen Gesprächen. Hierzu zählen beispielsweise frühere Anfragen, Problemlösungen oder besondere Gesprächssituationen. Im Gegensatz zum semantischen Gedächtnis besitzen diese Informationen einen zeitlichen und kontextbezogenen Bezug.
+
+Die Kombination aus Kurzzeit- und Langzeitgedächtnis ermöglicht es personalisierten Chatbots, sowohl aktuelle Gesprächsinhalte als auch langfristige Nutzerinformationen bei der Antwortgenerierung zu berücksichtigen.
+
+\subsubsection{Retrieval Augmented generation}
+LLMs haben die Einschränkung, dass ihre Informationen auf den Trainingsdaten basieren. Daher können sie aktuelles wissen oder Domänenspezifisches wissen in der Antwortgenerierung nicht gezielt einbinden und neigen daher zur Halluzination. Retrieval Augmented Generation (RAG) ist ein Framework, welches es dem Anwender ermöglicht LLMs mit externen Wissensbasen zu erweitern. Dabei werden zur Laufzeit der Prompt Erstellung zusätzliche Daten aus Datenbanken abgefragt und im Kontextfenster implementiert. RAG hilft dabei die Einschränkungen von LLMs zu überwinden und die Antwortgenerierung zu optimieren.
 
 Ein typischer RAG Prozess kann der Abbildung \ref{fig:RAG} entnommen werden. Der Prozess startet mit dem Nutzer, der einen Prompt formuliert. Im Anschluss wird mithilfe des Prompts eine Query vorbereitet. Ein wichtiger Zwischenschritt in dem Prozess ist das Indexing. Beim Indexing werden Inhalte in sogenannte Chunks eingeteilt. Aus den Chunks werden mithilfe von Embedding Modellen Vektorrepräsentationen erzeugt. Das Embedding Modell sorgt dafür, dass aus semantisch ähnlichen Inhalten, ähnliche Vektorrepräsentationen erzeugt werden. Die Ähnlichkeit wird durch Metriken wie der euklidischen Distanz oder dem Skalarprodukt gemessen. Diese Vektoren werden Anschließend in Vektordatenbanken gespeichert.
 
@@ -66,14 +112,6 @@ Bevor der Prompt dem LLM zur Antwortgenerierung übergeben wird, wird die query 
 		\label{fig:RAG}
 	\end{minipage}
 \end{figure}
-
-
-
-
-
-%\subsection{Personalisierung}
-
-%\subsection{Nutzerpräferenzen}
 
 
 \subsection{Forschungsansatz und Methodik}
@@ -104,24 +142,3 @@ Im letzten Schritt wird die Lösung vor dem Hintergrund des Problemraums und der
 \subsubsection{Methodik}
 
 
-\section{Stand der Forschung}
-Die Personalisierung von Chatbots stellt gerade im Unternehmenskontext eine aktuelle Herausforderung dar. Ziel dieses Abschnittes ist es in diesem Zusammenhang aktuelle Techniken und Ansätze aus der Forschung vorzustellen, die sich ebenfalls mit dieser Fragestellung auseinandergesetzt haben.
-
-\subsection{Personalisierte LLMs}
-Ein oft behandeltes Thema bilden personalisierte LLMs. Dabei geht es darum LLMs explizit auf die Präferenzen eines Nutzers abzustimmen, sodass diese antworten generieren, die direkt auf eine Person zugeschnitten sind. In der Praxis stellt dies jedoch eine grundlegende Schwierigkeit für Unternehmen dar, da moderne LLMs meist in den Händen der Anbieter sind und sich nicht einfach so neu trainieren lassen. Aus diesem Grund bildet dieser Ansatz, sofern nicht eigene LLMs aufgebaut werden, einen unrealistischen Ansatz für diese Arbeit.
-
-\subsection{Chat Historie}
-Ein weiterer Ansatz der in vielen Arbeiten erwähnt wird, ist es die Chat Historie als Kontext in den Prompt zu integrieren. Das LLM könnte in diesem Zusammenhang selbst, die Präferenzen aus der Chat Historie extrahieren und anhand dieser eine Antwort generieren. In Anbetracht der Größe des Kontextfensters für LLMs, zeigen sich dabei jedoch grundlegende Herausforderungen, da die Anzahl an Tokens begrenzt ist. 
-
-\subsection{RAG Ansätze}
-Im Jahr 2025 stellten Zhao et al. in ihrem wissenschaftlichen Paper "Do LLMs Recognize Your Preferences? Evaluating Personalized Preference Following in LLMs" einen Benchmark (PrefEval) zur Evaluation der Präferenzverarbeitung in konversationsbasierten LLM-Systemen vor. In dieser Arbeit wurde untersucht, wie gut LLM Modelle Nutzerpräferenzen über längere Konversationen hinweg erkennen, speichern und in Antworten berücksichtigen können.
-
-Die Ergebnisse des Benchmarks zeigen, dass moderne LLMs grundsätzlich in der Lage sind, Nutzerpräferenzen innerhalb von Konversationen zu berücksichtigen. Gleichzeitig zeigt sich jedoch, dass insbesondere die konsistente Verarbeitung von Präferenzen über längere und mehrere Konversationen hinweg weiterhin eine zentrale Herausforderung darstellt. 
-
-Die Ergebnisse des Benchmarks zeigen, dass die Fähigkeit von LLMs zur Berücksichtigung von Nutzerpräferenzen mit zunehmender Gesprächslänge deutlich abnimmt. Während Präferenzen in kurzen Konversationen häufig noch korrekt verarbeitet werden können, sinkt die Genauigkeit bei längeren Dialogen erheblich. Insbesondere Präferenzen, die früh innerhalb einer Konversation genannt wurden, werden von den Modellen häufig nicht mehr zuverlässig berücksichtigt.
-
-%Die Arbeit identifiziert dabei mehrere Problemfelder moderner LLMs im Kontext personalisierter Interaktionen. Dazu zählen unter anderem sogenannte Preference-Unaware Violations, bei denen Nutzerpräferenzen vollständig ignoriert werden, sowie Preference Hallucinations, bei denen Modelle fälschlicherweise Präferenzen ergänzen oder annehmen, die zuvor nicht geäußert wurden. Diese Ergebnisse verdeutlichen, dass große Kontextfenster allein nicht ausreichen, um eine konsistente Personalisierung sicherzustellen. Obwohl relevante Informationen technisch weiterhin im Kontext enthalten sein können, gelingt es den Modellen häufig nicht, diese Informationen zuverlässig abzurufen und in die Antwortgenerierung einzubeziehen.
-
-Die Ergebnisse von PREFEVAL zeigen jedoch auch, dass insbesondere RAG-basierte Ansätze Halluzinationen reduzieren und die konsistente Berücksichtigung von Nutzerpräferenzen verbessern können. Durch den gezielten Abruf relevanter Präferenzinformationen aus externen Speicherstrukturen gelingt es den Modellen besser, frühere Nutzerangaben in späteren Konversationen erneut zu berücksichtigen. Dies ist insbesondere für personalisierte Chatbots im Unternehmenskontext relevant, da Nutzerpräferenzen häufig über längere Zeiträume hinweg konsistent verarbeitet werden müssen.
-
-Externe Retrieval-Mechanismen bilden somit einen vielversprechenden Ansatz, um die Limitierungen kontextbasierter Präferenzverarbeitung moderner LLMs zu adressieren.
